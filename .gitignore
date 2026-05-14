@@ -1,2 +1,5 @@
-data/steam_master_data.json
+*.json
 *.zip
+*.csv
+*.txt
+/data/
