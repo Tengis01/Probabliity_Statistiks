@@ -1,0 +1,20 @@
+# Probability_Statistics
+
+## Team Project
+
+### Project Topic
+Video Game Sales Success Prediction
+
+Энэ repository нь Probability & Statistics хичээлийн багийн төслийн үндсэн code болон холбоотой файлуудыг агуулна.
+
+## Анхаарах зүйлс
+
+- Багийн ажлын гол code энэ repository дээр явах тул commit хийхээсээ өмнө code-оо шалгаж байх
+- Мэдэхгүй эсвэл эргэлзээтэй зүйл гарвал заавал багийн гишүүдээсээ асууж тодруулах
+- Цаг бага байгаа тул тусдаа branch ашиглахгүй, бүгд main branch дээрээ pull/push хийж ажиллана
+- Өөрсдийн хариуцсан хэсэг дээр ажиллавал conflict гарах асуудал бага байна
+- Хэрэв merge conflict эсвэл бусад technical асуудал гараад AI чинь шийдэж чадахгүй байвал нэгнээсээ туслалцаа авах
+
+## Хэрэгтэй линк
+Canva link: https://canva.link/5wytuaeswb1otfa
+Тайлан загвар удахгүй оруулна.
