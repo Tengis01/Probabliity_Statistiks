@@ -1,0 +1,363 @@
+---
+title: "Steam тоглоомын борлуулалтын амжилтийн таамаглал"
+subtitle: "Магадлал статистик (ICSI203)"
+author:
+  - "Ц.Тэнгис /22B1NUM6249/"
+  - "Батзориг"
+  - "Өсөхбаяр"
+  - "Хүслэн"
+date: "2026/05/16"
+format:
+  html:
+    toc: true
+    toc-title: "Агуулга"
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    embed-resources: true
+lang: mn
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Оршил
+
+## Судалгааны сэдэв, зорилго
+
+*[Энд судалгааны сэдэв, зорилгоо бичнэ]*
+
+## Хураангуй
+
+*[Энд хураангуйгаа бичнэ — сэдэв, ашигласан арга, үр дүнг товч дурдана]*
+
+
+
+# Онолын үндэс
+
+## Naive Bayes алгоритм
+
+Наив Байесын алгоритм нь Байесын теоремд суурилсан магадлалын ангиллын арга юм.
+Ажиглагдсан өгөгдөл $X$ өгөгдсөн үед тухайн объект тодорхой ангилалд хамаарах
+магадлалыг дараах томьёогоор тооцоолдог.
+
+$$
+P(C \mid X) = \frac{P(X \mid C) \cdot P(C)}{P(X)}
+$$
+
+Энд:
+
+- $C$ — ангилал (success эсвэл failure)
+- $X$ — ажиглагдсан өгөгдөл (feature-үүд)
+- $P(C)$ — урьдчилсан магадлал
+- $P(X \mid C)$ — нөхцөлт магадлал
+- $P(C \mid X)$ — дараах магадлал
+
+Ангиллын шийдвэрийг хамгийн өндөр магадлалтай ангиллыг сонгох зарчмаар гаргана:
+
+$$
+\hat{C} = \arg\max_{C} \; P(C \mid X)
+$$
+
+### Multinomial Naive Bayes
+
+Multinomial Naive Bayes нь **тоологдох утга** дээр ажилладаг загвар юм.
+Энэхүү судалгаанд тоглоомын tag-уудыг multi-hot encoding хийж оролтын feature болгосон.
+"Indie tag байна уу, үгүй юу" гэсэн 50 binary асуултын хариултаар
+тоглоом амжилттай эсэхийг таарварлана.
+Энэ нь email spam detection дээр үгийн давтамжийг ашигладагтай ижил зарчим юм.
+
+### Gaussian Naive Bayes
+
+Gaussian Naive Bayes нь **үргэлжилсэн тоон утга** дээр ажилладаг загвар юм.
+Загвар нь feature бүрийн утга normal (Gaussian) distribution дагана гэж үзэж,
+train үед класс тус бүрийн дундаж $\mu$ болон стандарт хазайлт $\sigma$-г хадгална.
+
+$$
+P(x_i \mid C) = \frac{1}{\sqrt{2\pi\sigma_C^2}} \exp\!\left(-\frac{(x_i - \mu_C)^2}{2\sigma_C^2}\right)
+$$
+
+Энэхүү судалгаанд үнэ, tag тоо, хэлний тоо, гарсан он зэрэг тоон feature-үүдэд
+Gaussian Naive Bayes загварыг хэрэглэв.
+
+## Шийдвэрийн мод
+
+*[Шийдвэрийн модны онолын тайлбарыг энд бичнэ]*
+
+
+
+# Өгөгдөл
+
+## Өгөгдлийн эх сурвалж, тайлбар
+
+Энэхүү судалгаанд Kaggle платформоос авсан Steam тоглоомын мэдээллийн санг ашиглав.
+Өгөгдлийн сан нь 2026 оны байдлаар Steam дээр байршсан тоглоомуудын мэдээллийг агуулна.
+
+| Багана | Тайлбар |
+|---|---|
+| `game_name` | Тоглоомын нэр |
+| `price` | Үнэ |
+| `tags` | Хэрэглэгчийн тодорхойлсон tag-ууд |
+| `genres` | Тоглоомын төрөл |
+| `languages` | Дэмжих хэлүүд |
+| `release_date` | Гарсан огноо |
+| `review_summary` | Хэрэглэгчийн үнэлгээний нийлбэр |
+| `review_count` | Нийт үнэлгээний тоо |
+
+: Ашигласан өгөгдлийн баганууд
+
+## Өгөгдлийн боловсруулалт
+
+```{python}
+import ast
+import pandas as pd
+import numpy as np
+
+TRAIN_PATH = "../data/train.csv"
+TEST_PATH  = "../data/test.csv"
+
+SUCCESS_LABELS = {
+    "Very Positive",
+    "Overwhelmingly Positive",
+    "Mostly Positive",
+    "Positive",
+}
+FAILURE_LABELS = {
+    "Negative",
+    "Mostly Negative",
+    "Mixed",
+    "Very Negative",
+    "Overwhelmingly Negative",
+}
+
+TOP_TAGS_COUNT = 50
+
+train_raw = pd.read_csv(TRAIN_PATH)
+test_raw  = pd.read_csv(TEST_PATH)
+
+print(f"train нийт мөр: {len(train_raw)}")
+print(f"test  нийт мөр: {len(test_raw)}")
+print(f"багануудын тоо: {len(train_raw.columns)}")
+```
+
+"No Rating" болон үнэлгээний тоо хангалтгүй мөрүүдийг хасаж,
+зөвхөн тодорхой амжилттай эсвэл амжилтгүй гэсэн үнэлгээтэй тоглоомуудыг үлдээв.
+
+```{python}
+def load_and_filter(path):
+    df = pd.read_csv(path)
+    valid = SUCCESS_LABELS | FAILURE_LABELS
+    df = df[df["review_summary"].isin(valid)].copy()
+    df["success"] = df["review_summary"].isin(SUCCESS_LABELS).astype(int)
+    return df
+
+train_df = load_and_filter(TRAIN_PATH)
+test_df  = load_and_filter(TEST_PATH)
+
+print(f"шүүлтийн дараа train: {len(train_df)} мөр")
+print(f"шүүлтийн дараа test:  {len(test_df)} мөр")
+print(f"train амжилтын хувь:  {train_df['success'].mean():.3f}")
+print(f"test  амжилтын хувь:  {test_df['success'].mean():.3f}")
+```
+
+
+
+# Загварын хэрэгжүүлэлт
+
+## Feature сонголт, боловсруулалт
+
+Загварт ашиглах feature-үүдийг хоёр бүлэгт хуваав.
+
+**Multinomial NB-д зориулсан tag feature:**
+
+```{python}
+def parse_list_col(series):
+    # JSON list string-ийг Python list болгон parse хийнэ
+    def safe_parse(val):
+        try:
+            return ast.literal_eval(val)
+        except Exception:
+            return []
+    return series.apply(safe_parse)
+
+
+def get_top_tags(train_df, n):
+    # train дээрх хамгийн их давтагдсан n tag-ийг буцаана
+    tag_counts = {}
+    for tag_list in parse_list_col(train_df["tags"]):
+        for tag in tag_list:
+            tag_counts[tag] = tag_counts.get(tag, 0) + 1
+    sorted_tags = sorted(tag_counts, key=tag_counts.get, reverse=True)
+    return sorted_tags[:n]
+
+
+def encode_tags(df, top_tags):
+    # top_tags тус бүр binary feature болгоно (multi-hot)
+    tag_lists = parse_list_col(df["tags"])
+    tag_set_list = [set(lst) for lst in tag_lists]
+    encoded = {}
+    for tag in top_tags:
+        col_name = f"tag_{tag.lower().replace(' ', '_')}"
+        encoded[col_name] = [1 if tag in tag_set else 0 for tag_set in tag_set_list]
+    return pd.DataFrame(encoded, index=df.index)
+
+
+top_tags   = get_top_tags(train_df, TOP_TAGS_COUNT)
+x_train_nb = encode_tags(train_df, top_tags)
+x_test_nb  = encode_tags(test_df, top_tags)
+
+print(f"tag feature хэмжээ: {x_train_nb.shape}")
+print(f"хамгийн өргөн тархсан top 5 tag: {top_tags[:5]}")
+```
+
+**Gaussian NB-д зориулсан тоон feature:**
+
+```{python}
+def build_numeric_features(df):
+    # тоон feature-үүдийг гарган авна
+    df = df.copy()
+    df["release_date"] = pd.to_datetime(df["release_date"], errors="coerce")
+    df["release_year"] = df["release_date"].dt.year.fillna(0).astype(int)
+
+    df["tag_count"]   = parse_list_col(df["tags"]).apply(len)
+    df["genre_count"] = parse_list_col(df["genres"]).apply(len)
+    df["lang_count"]  = parse_list_col(df["languages"]).apply(len)
+    df["is_free"]     = (df["price"] == 0).astype(int)
+
+    price_cap = 5000
+    df["price_capped"] = df["price"].clip(0, price_cap)
+
+    cols = ["price_capped", "is_free", "tag_count",
+            "genre_count", "lang_count", "release_year"]
+    return df[cols].fillna(0)
+
+
+x_train_num = build_numeric_features(train_df)
+x_test_num  = build_numeric_features(test_df)
+
+print("тоон feature-үүдийн статистик:")
+print(x_train_num.describe().round(2).to_string())
+```
+
+## Multinomial Naive Bayes хэрэгжүүлэлт
+
+```{python}
+from sklearn.naive_bayes import MultinomialNB, GaussianNB
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+y_train = train_df["success"]
+y_test  = test_df["success"]
+
+
+def print_results(model_name, y_test, y_pred):
+    total   = len(y_test)
+    correct = accuracy_score(y_test, y_pred, normalize=False)
+    acc     = correct / total
+
+    cm = confusion_matrix(y_test, y_pred)
+    tn, fp, fn, tp = cm.ravel()
+
+    success_total       = tp + fn
+    failure_total       = tn + fp
+    success_correct_pct = tp / success_total * 100 if success_total > 0 else 0
+    failure_correct_pct = tn / failure_total * 100 if failure_total > 0 else 0
+
+    print(f"загвар: {model_name}")
+    print(f"нийт {total} тоглоомоос {int(correct)} зөв таарсан ({acc*100:.1f}%)")
+    print()
+    print(f"  амжилттай тоглоом:  {success_total}-аас {tp} зөв  ({success_correct_pct:.1f}%)")
+    print(f"  амжилтгүй тоглоом:  {failure_total}-аас {tn} зөв  ({failure_correct_pct:.1f}%)")
+    print()
+    print(f"  алдаа 1 - амжилттайг амжилтгүй гэж таасан: {fn}")
+    print(f"  алдаа 2 - амжилтгүйг амжилттай гэж таасан: {fp}")
+
+
+mnb = MultinomialNB()
+
+# train өгөгдлөөр P(tag | success) болон P(tag | failure) магадлалуудыг тооцоолно
+mnb.fit(x_train_nb, y_train)
+
+# test өгөгдлийн tag-уудаар Bayes теоремоор класс таарварлана
+y_pred_mnb = mnb.predict(x_test_nb)
+
+print_results("MultinomialNB", y_test, y_pred_mnb)
+```
+
+## Gaussian Naive Bayes хэрэгжүүлэлт
+
+```{python}
+gnb = GaussianNB()
+
+# train өгөгдлөөр feature бүрийн дундаж, стандарт хазайлтыг класс тус бүрд тооцно
+gnb.fit(x_train_num, y_train)
+
+# test өгөгдлийн утга бүрийг gaussian_pdf(x, mean, std) томьёогоор магадлал болгон
+# хөрвүүлж P(success | features) > P(failure | features) эсэхийг шалгана
+y_pred_gnb = gnb.predict(x_test_num)
+
+print_results("GaussianNB", y_test, y_pred_gnb)
+```
+
+## Шийдвэрийн мод хэрэгжүүлэлт
+
+*[Шийдвэрийн модны кодыг энд бичнэ]*
+
+
+
+# Үр дүн, тайлбар
+
+*[Үр дүнгийн тайлбарыг энд бичнэ]*
+
+| Загвар | Accuracy | Алдаа 1 | Алдаа 2 |
+|---|---|---|---|
+| MultinomialNB | 62.9% | 1781 | 1462 |
+| GaussianNB | 62.3% | 1077 | 2218 |
+| Шийдвэрийн мод | — | — | — |
+
+: Загваруудын үр дүнгийн харьцуулалт
+
+
+
+# Дүгнэлт, зөвлөмж
+
+## Үр дүнгийн дүгнэлт
+
+*[Дүгнэлтийг энд бичнэ]*
+
+## Загварын хязгаарлалт
+
+Энэхүү судалгаанд хэд хэдэн хязгаарлалт оршиж байв. Тоглоомын чанар нь
+өгөгдөлд шууд тусгагдахгүй тул загварын accuracy 62.9%-иас дээш гарах боломж
+хязгаарлагдмал байсан. Мөн `review_count` болон `review_percent` баганууд нь
+таргет хувьсагчтай шууд холбоотой тул data leakage-ийн эрсдэлээс зайлсхийн
+feature болгон ашиглаагүй болно.
+
+## Цаашдын зөвлөмж
+
+*[Цаашдын зөвлөмжийг энд бичнэ]*
+
+
+
+# Ашигласан материал
+
+*[APA форматаар ашигласан материалын жагсаалтыг энд бичнэ]*
+
+
+
+# Хавсралт
+
+## Иж бүрэн код
+
+Иж бүрэн програмын эх код нь хавсаргасан `Project.py` файлд байна.
+
+## Багийн гишүүдийн үүрэг, оролцоо
+
+| Нэр | Үүрэг |
+|---|---|
+| Ц.Тэнгис | Naive Bayes хэрэгжүүлэлт, өгөгдлийн боловсруулалт |
+| Батзориг | *[үүргийг бичнэ]* |
+| Өсөхбаяр | *[үүргийг бичнэ]* |
+| Хүслэн | *[үүргийг бичнэ]* |
+
+: Багийн гишүүдийн үүрэг, оролцоо
