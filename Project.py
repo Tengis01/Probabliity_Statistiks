@@ -173,33 +173,32 @@ def main():
     gnb_model = run_gaussian_nb(x_train_num, y_train, x_test_num, y_test)
     print()
 
-
-
     # Decision tree
+    
+    x_train_tree = pd.concat(
+        [x_train_nb.reset_index(drop=True),
+         x_train_num.reset_index(drop=True)],
+        axis=1
+    )
 
-x_train_tree = pd.concat(
-    [x_train_nb.reset_index(drop=True),
-     x_train_num.reset_index(drop=True)],
-    axis=1
-)
+    x_test_tree = pd.concat(
+        [x_test_nb.reset_index(drop=True),
+         x_test_num.reset_index(drop=True)],
+        axis=1
+    )
 
-x_test_tree = pd.concat(
-    [x_test_nb.reset_index(drop=True),
-     x_test_num.reset_index(drop=True)],
-    axis=1
-)
+    tree_model = DecisionTreeClassifier(
+        criterion="gini",
+        max_depth=6,
+        min_samples_split=20,
+        random_state=42
+    )
 
-tree_model = DecisionTreeClassifier(
-    criterion="gini",
-    max_depth=6,
-    min_samples_split=20,
-    random_state=42
-)
-tree_model.fit(x_train_tree, y_train)
+    tree_model.fit(x_train_tree, y_train)
 
-y_pred_tree = tree_model.predict(x_test_tree)
+    y_pred_tree = tree_model.predict(x_test_tree)
 
-print_results("Decision Tree", y_test, y_pred_tree)
+    print_results("Decision Tree", y_test, y_pred_tree)
 
 if __name__ == "__main__":
     main()
