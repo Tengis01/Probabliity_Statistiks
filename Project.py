@@ -176,6 +176,8 @@ def main():
 
 
     # Decision tree
+
+try:
     from sklearn.tree import DecisionTreeClassifier
 
     x_train_tree = pd.concat(
@@ -202,6 +204,10 @@ def main():
     y_pred_tree = tree_model.predict(x_test_tree)
 
     print_results("Decision Tree", y_test, y_pred_tree)
+
+except Exception as e:
+    print("Decision Tree хэсэг ажиллах боломжгүй байна.")
+    print("Алдаа:", e)e)
 
 if __name__ == "__main__":
     main()
