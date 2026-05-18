@@ -3356,7 +3356,13 @@ P(x_i \mid C) = \frac{1}{\sqrt{2\pi\sigma_C^2}} \exp\!\left(-\frac{(x_i - \mu_C)
 </section>
 <section id="шийдвэрийн-мод" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="шийдвэрийн-мод"><span class="header-section-number">2.2</span> Шийдвэрийн мод</h2>
-<p><em>[Шийдвэрийн модны онолын тайлбарыг энд бичнэ]</em></p>
+<p>Шийдвэрийн мод буюу Decision Tree нь supervised learning ангиллын алгоритм бөгөөд өгөгдлийг шат дараалсан нөхцөлт асуултуудаар хувааж ангилдаг машин сургалтын арга юм. Энэхүү алгоритм нь хүний шийдвэр гаргах логиктой төстэй ажилладаг тул ойлгоход хялбар байдаг.</p>
+<p>Decision Tree алгоритм нь өгөгдлийг хамгийн сайн ялгаж чадах feature-ийг сонгон өгөгдлийг success эсвэл failure ангилалд хуваадаг. Манай судалгаанд тоглоомын үнэ, tag болон genre зэрэг feature-үүдийг ашиглан Steam тоглоомын амжилтыг таамагласан.</p>
+<p>Энэхүү судалгаанд өгөгдлийн эмх цэгцгүй байдлыг хэмжихдээ Gini impurity ашигласан.</p>
+<p><span class="math display">\[
+Gini = 1 - \sum_{i=1}^{n} p_i^2
+\]</span></p>
+<p>Энд (p_i) нь тухайн ангиллын магадлалыг илэрхийлнэ. Gini impurity бага байх тусам тухайн node илүү цэвэр ангилалтай байна гэж үздэг.</p>
 </section>
 </section>
 <section id="өгөгдөл" class="level1" data-number="3">
@@ -3410,7 +3416,7 @@ P(x_i \mid C) = \frac{1}{\sqrt{2\pi\sigma_C^2}} \exp\!\left(-\frac{(x_i - \mu_C)
 </section>
 <section id="өгөгдлийн-боловсруулалт" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="өгөгдлийн-боловсруулалт"><span class="header-section-number">3.2</span> Өгөгдлийн боловсруулалт</h2>
-<div id="7098cb69" class="cell" data-execution_count="1">
+<div id="75b5dda9" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ast</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -3447,7 +3453,7 @@ test  нийт мөр: 42021
 </div>
 </div>
 <p>“No Rating” болон үнэлгээний тоо хангалтгүй мөрүүдийг хасаж, зөвхөн тодорхой амжилттай эсвэл амжилтгүй гэсэн үнэлгээтэй тоглоомуудыг үлдээв.</p>
-<div id="a775933e" class="cell" data-execution_count="2">
+<div id="3dad9602" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_and_filter(path):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(path)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    valid <span class="op">=</span> SUCCESS_LABELS <span class="op">|</span> FAILURE_LABELS</span>
@@ -3477,7 +3483,7 @@ test  амжилтын хувь:  0.485</code></pre>
 <h2 data-number="4.1" class="anchored" data-anchor-id="feature-сонголт-боловсруулалт"><span class="header-section-number">4.1</span> Feature сонголт, боловсруулалт</h2>
 <p>Загварт ашиглах feature-үүдийг хоёр бүлэгт хуваав.</p>
 <p><strong>Multinomial NB-д зориулсан tag feature:</strong></p>
-<div id="48d2fe12" class="cell" data-execution_count="3">
+<div id="3077d961" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_list_col(series):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># JSON list string-ийг Python list болгон parse хийнэ</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> safe_parse(val):</span>
@@ -3521,7 +3527,7 @@ test  амжилтын хувь:  0.485</code></pre>
 </div>
 </div>
 <p><strong>Gaussian NB-д зориулсан тоон feature:</strong></p>
-<div id="f84b1a42" class="cell" data-execution_count="4">
+<div id="2746869d" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_numeric_features(df):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># тоон feature-үүдийг гарган авна</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.copy()</span>
@@ -3562,7 +3568,7 @@ max         5000.00      1.00      20.00        11.00      103.00       2026.00<
 </section>
 <section id="multinomial-naive-bayes-хэрэгжүүлэлт" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="multinomial-naive-bayes-хэрэгжүүлэлт"><span class="header-section-number">4.2</span> Multinomial Naive Bayes хэрэгжүүлэлт</h2>
-<div id="a113f8e7" class="cell" data-execution_count="5">
+<div id="60ac2f9b" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> MultinomialNB, GaussianNB</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, confusion_matrix</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3616,7 +3622,7 @@ max         5000.00      1.00      20.00        11.00      103.00       2026.00<
 </section>
 <section id="gaussian-naive-bayes-хэрэгжүүлэлт" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="gaussian-naive-bayes-хэрэгжүүлэлт"><span class="header-section-number">4.3</span> Gaussian Naive Bayes хэрэгжүүлэлт</h2>
-<div id="73edcee2" class="cell" data-execution_count="6">
+<div id="684d702a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gnb <span class="op">=</span> GaussianNB()</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># train өгөгдлөөр feature бүрийн дундаж, стандарт хазайлтыг класс тус бүрд тооцно</span></span>
@@ -3708,6 +3714,10 @@ max         5000.00      1.00      20.00        11.00      103.00       2026.00<
 <h2 data-number="8.2" class="anchored" data-anchor-id="багийн-гишүүдийн-үүрэг-оролцоо"><span class="header-section-number">8.2</span> Багийн гишүүдийн үүрэг, оролцоо</h2>
 <table class="caption-top table">
 <caption>Багийн гишүүдийн үүрэг, оролцоо</caption>
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Нэр</th>
@@ -3717,19 +3727,19 @@ max         5000.00      1.00      20.00        11.00      103.00       2026.00<
 <tbody>
 <tr class="odd">
 <td>Ц.Тэнгис</td>
-<td>Naive Bayes хэрэгжүүлэлт, өгөгдлийн боловсруулалт</td>
+<td>Naive Bayes хэрэгжүүлэлт, харгалзах тайлан, presentation хэсэг</td>
 </tr>
 <tr class="even">
 <td>Батзориг</td>
-<td><em>[үүргийг бичнэ]</em></td>
+<td>Сэдэв зорилго, хураангуй, өгөгдөл боловсруулалт, харгалзах тайлан, presentation хэсэг</td>
 </tr>
 <tr class="odd">
-<td>Өсөхбаяр</td>
-<td><em>[үүргийг бичнэ]</em></td>
+<td>Хүслэн</td>
+<td>Шийдвэрийн мод хэрэгжүүлэлт, харгалзах тайлан, presentation хэсэг</td>
 </tr>
 <tr class="even">
-<td>Хүслэн</td>
-<td><em>[үүргийг бичнэ]</em></td>
+<td>Өсөхбаяр</td>
+<td>Graphic дүрслэл, дүгнэлт харгалзах тайлан, presentation хэсэг</td>
 </tr>
 </tbody>
 </table>
