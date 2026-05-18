@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.naive_bayes import MultinomialNB, GaussianNB
 from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.tree import DecisionTreeClassifier
 
 
 TRAIN_PATH = "data/train.csv"
@@ -175,7 +176,32 @@ def main():
 
 
     # Decision tree
+    from sklearn.tree import DecisionTreeClassifier
 
+    x_train_tree = pd.concat(
+        [x_train_nb.reset_index(drop=True),
+         x_train_num.reset_index(drop=True)],
+        axis=1
+    )
+
+    x_test_tree = pd.concat(
+        [x_test_nb.reset_index(drop=True),
+         x_test_num.reset_index(drop=True)],
+        axis=1
+    )
+
+    tree_model = DecisionTreeClassifier(
+        criterion="gini",
+        max_depth=6,
+        min_samples_split=20,
+        random_state=42
+    )
+
+    tree_model.fit(x_train_tree, y_train)
+
+    y_pred_tree = tree_model.predict(x_test_tree)
+
+    print_results("Decision Tree", y_test, y_pred_tree)
 
 if __name__ == "__main__":
     main()
