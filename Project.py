@@ -6,8 +6,8 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.tree import DecisionTreeClassifier
 
 
-TRAIN_PATH = "data/train.csv"
-TEST_PATH  = "data/test.csv"
+TRAIN_PATH = "train.csv"
+TEST_PATH  = "test.csv"
 
 SUCCESS_LABELS = {
     "Very Positive",
@@ -147,7 +147,218 @@ def run_gaussian_nb(x_train, y_train, x_test, y_test):
     return model
 
 
+def interactive_prediction_system():
+    """Full interactive system with trained models - Line by line input"""
+    
+    train_df = load_and_filter(TRAIN_PATH)
+    test_df = load_and_filter(TEST_PATH)
+    
+    top_tags = get_top_tags(train_df, TOP_TAGS_COUNT)
+    
+    # Prepare training data
+    x_train_tags = encode_tags(train_df, top_tags)
+    x_train_num = build_numeric_features(train_df)
+    x_train = pd.concat([x_train_tags.reset_index(drop=True),
+                         x_train_num.reset_index(drop=True)], axis=1)
+    y_train = train_df["success"]
+    
+    # Train model
+    model = DecisionTreeClassifier(criterion="gini", max_depth=6, 
+                                   min_samples_split=20, random_state=42)
+    model.fit(x_train, y_train)
+    
+    print("\n" + "="*60)
+    print("🎮 GAME SUCCESS PREDICTOR 🎮")
+    print("="*60)
+    print("Enter game details below (press Enter after each line)")
+    print("Type 'quit' at any prompt to exit")
+    print("-"*60)
+    
+    while True:
+        print("\n" + "🔍 NEW GAME".center(60))
+        print("-"*60)
+        
+        try:
+            # Tags input
+            print("\n📷 TAGS (comma-separated):")
+            print("   Example: Indie, RPG, Story Rich, Adventure")
+            tags_input = input("   ➜ Tags: ").strip()
+            if tags_input.lower() == 'quit':
+                break
+            tags = [t.strip() for t in tags_input.split(',') if t.strip()]
+            
+            # Price input
+            print("\n💰 PRICE (in USD):")
+            print("   Example: 19.99, 0.00, 49.99")
+            price_input = input("   ➜ Price: $").strip()
+            if price_input.lower() == 'quit':
+                break
+            price = float(price_input)
+            
+            # Genres input
+            print("\n🎭 GENRES (comma-separated):")
+            print("   Example: Indie, RPG, Strategy")
+            genres_input = input("   ➜ Genres: ").strip()
+            if genres_input.lower() == 'quit':
+                break
+            genres = [g.strip() for g in genres_input.split(',') if g.strip()]
+            
+            # Languages input
+            print("\n🌐 LANGUAGES (comma-separated):")
+            print("   Example: English, French, German, Spanish")
+            langs_input = input("   ➜ Languages: ").strip()
+            if langs_input.lower() == 'quit':
+                break
+            languages = [l.strip() for l in langs_input.split(',') if l.strip()]
+            
+            # Release date input
+            print("\n📅 RELEASE DATE (YYYY-MM-DD):")
+            print("   Example: 2023-06-15")
+            release_date = input("   ➜ Release date: ").strip()
+            if release_date.lower() == 'quit':
+                break
+            
+            # Show summary before prediction
+            print("\n" + "="*60)
+            print("📋 GAME SUMMARY".center(60))
+            print("="*60)
+            print(f"   Tags:      {', '.join(tags)}")
+            print(f"   Price:     ${price:.2f}")
+            print(f"   Genres:    {', '.join(genres)}")
+            print(f"   Languages: {', '.join(languages)}")
+            print(f"   Released:  {release_date}")
+            
+            # Create DataFrame
+            game_df = pd.DataFrame({
+                'tags': [str(tags)],
+                'genres': [str(genres)],
+                'languages': [str(languages)],
+                'price': [price],
+                'release_date': [release_date],
+                'review_summary': ['Unknown']
+            })
+            
+            # Process features
+            x_tags_pred = encode_tags(game_df, top_tags)
+            x_num_pred = build_numeric_features(game_df)
+            x_pred = pd.concat([x_tags_pred.reset_index(drop=True),
+                               x_num_pred.reset_index(drop=True)], axis=1)
+            
+            # Predict
+            pred = model.predict(x_pred)[0]
+            prob = model.predict_proba(x_pred)[0]
+            
+            # Display results with visual feedback
+            print("\n" + "="*60)
+            print("🎯 PREDICTION RESULT".center(60))
+            print("="*60)
+            
+            # Create progress bar for confidence
+            def confidence_bar(percentage, width=20):
+                filled = int(width * percentage / 100)
+                bar = '█' * filled + '░' * (width - filled)
+                return bar
+            
+            if pred == 1:
+                print("\n✅ PREDICTION: SUCCESSFUL GAME ✅")
+                print(f"\n   Confidence: {prob[1]*100:.1f}%")
+                print(f"   {confidence_bar(prob[1]*100)}")
+            else:
+                print("\n❌ PREDICTION: FAILURE GAME ❌")
+                print(f"\n   Confidence: {prob[0]*100:.1f}%")
+                print(f"   {confidence_bar(prob[0]*100)}")
+            
+            print(f"\n   📊 Success probability: {prob[1]*100:.1f}%")
+            print(f"   📊 Failure probability: {prob[0]*100:.1f}%")
+            
+            # Feature importance feedback
+            print("\n" + "📊 KEY FACTORS ANALYZED".center(60))
+            print("-"*60)
+            
+            # Check various features
+            factors = []
+            
+            if 'tag_indie' in x_tags_pred.columns and x_tags_pred['tag_indie'].values[0] == 1:
+                factors.append(("✓ Has 'Indie' tag", "positive"))
+            if 'tag_action' in x_tags_pred.columns and x_tags_pred['tag_action'].values[0] == 1:
+                factors.append(("✓ Has 'Action' tag", "positive"))
+            if 'tag_strategy' in x_tags_pred.columns and x_tags_pred['tag_strategy'].values[0] == 1:
+                factors.append(("✓ Has 'Strategy' tag", "positive"))
+            
+            if x_num_pred['price_capped'].values[0] == 0:
+                factors.append(("✓ Free game", "positive"))
+            elif x_num_pred['price_capped'].values[0] > 30:
+                factors.append(("⚠️ High price (>$30)", "negative"))
+            elif x_num_pred['price_capped'].values[0] < 10:
+                factors.append(("✓ Low price (<$10)", "positive"))
+                
+            if x_num_pred['tag_count'].values[0] > 8:
+                factors.append(("✓ Many descriptive tags", "positive"))
+            elif x_num_pred['tag_count'].values[0] < 3:
+                factors.append(("⚠️ Few tags (less discovery)", "negative"))
+                
+            if x_num_pred['genre_count'].values[0] > 2:
+                factors.append(("✓ Multiple genres", "positive"))
+                
+            if x_num_pred['lang_count'].values[0] > 5:
+                factors.append(("✓ Broad language support", "positive"))
+            elif x_num_pred['lang_count'].values[0] == 1:
+                factors.append(("⚠️ Limited language support", "negative"))
+            
+            if factors:
+                for factor, _ in factors[:5]:  
+                    print(f"   {factor}")
+            else:
+                print("   No strong factors detected")
+            
+            # Alternative prediction using other models for comparison
+            print("\n" + "🔄 MODEL COMPARISON".center(60))
+            print("-"*60)
+            
+            # Also predict with Naive Bayes models for comparison
+            mnb_model = MultinomialNB()
+            mnb_model.fit(x_train_tags, y_train)
+            mnb_pred = mnb_model.predict(x_tags_pred)[0]
+            mnb_prob = mnb_model.predict_proba(x_tags_pred)[0]
+            
+            gnb_model = GaussianNB()
+            gnb_model.fit(x_train_num, y_train)
+            gnb_pred = gnb_model.predict(x_num_pred)[0]
+            gnb_prob = gnb_model.predict_proba(x_num_pred)[0]
+            
+            print(f"   Decision Tree:   {'✅ SUCCESS' if pred == 1 else '❌ FAILURE'} ({max(prob)*100:.1f}%)")
+            print(f"   Multinomial NB:  {'✅ SUCCESS' if mnb_pred == 1 else '❌ FAILURE'} ({max(mnb_prob)*100:.1f}%)")
+            print(f"   Gaussian NB:     {'✅ SUCCESS' if gnb_pred == 1 else '❌ FAILURE'} ({max(gnb_prob)*100:.1f}%)")
+            
+            # Final recommendation based on majority vote
+            votes = [pred, mnb_pred, gnb_pred]
+            majority = 1 if sum(votes) >= 2 else 0
+            
+            if majority != pred:
+                print(f"\n   💡 Ensemble suggests: {'SUCCESS' if majority == 1 else 'FAILURE'}")
+            
+        except ValueError:
+            print("\n❌ Error: Invalid number format. Please check your input.")
+            print("   Example: Price should be a number like 19.99")
+            continue
+        except KeyboardInterrupt:
+            print("\n\n👋 Goodbye!")
+            break
+        except Exception as e:
+            print(f"\n❌ Unexpected error: {e}")
+            print("   Please try again with valid input")
+            continue
+        
+        # Ask for another prediction
+        print("\n" + "-"*60)
+        again = input("\n🎮 Predict another game? (yes/no): ").strip().lower()
+        if again not in ['yes', 'y']:
+            print("\n👋 Thanks for using Game Success Predictor!")
+            break
+
+
 def main():
+    """Original main function for testing on test data"""
     train_df = load_and_filter(TRAIN_PATH)
     test_df  = load_and_filter(TEST_PATH)
 
@@ -174,7 +385,6 @@ def main():
     print()
 
     # Decision tree
-    
     x_train_tree = pd.concat(
         [x_train_nb.reset_index(drop=True),
          x_train_num.reset_index(drop=True)],
@@ -200,5 +410,32 @@ def main():
 
     print_results("Decision Tree", y_test, y_pred_tree)
 
+
 if __name__ == "__main__":
-    main()
+    # Ask user which mode to run
+    print("="*60)
+    print("🎮 GAME SUCCESS PREDICTION SYSTEM 🎮")
+    print("="*60)
+    print("\nSelect mode:")
+    print("1. Test on existing test data (original main function)")
+    print("2. Interactive prediction (enter your own game details)")
+    print("3. Run both")
+    
+    choice = input("\nEnter your choice (1/2/3): ").strip()
+    
+    if choice == '1':
+        main()
+    elif choice == '2':
+        interactive_prediction_system()
+    elif choice == '3':
+        print("\n" + "="*60)
+        print("RUNNING TEST ON TEST DATA")
+        print("="*60)
+        main()
+        print("\n" + "="*60)
+        print("STARTING INTERACTIVE MODE")
+        print("="*60)
+        interactive_prediction_system()
+    else:
+        print("Invalid choice. Running interactive mode by default.")
+        interactive_prediction_system()
