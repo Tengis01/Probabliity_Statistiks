@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Ц.Тэнгис /22B1NUM6249/">
-<meta name="author" content="Батзориг">
-<meta name="author" content="Өсөхбаяр">
-<meta name="author" content="Хүслэн">
+<meta name="author" content="Тэнгис /22B1NUM6249/">
+<meta name="author" content="Батзориг /23B1NUM1898/">
+<meta name="author" content="Өсөхбаяр /21B1NUM2080/">
+<meta name="author" content="Хүслэн /25B1NUM4286/">
 <meta name="dcterms.date" content="2026-05-16">
 
 <title>Steam тоглоомын борлуулалтын амжилтийн таамаглал</title>
@@ -2423,10 +2423,10 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
-             <p>Ц.Тэнгис /22B1NUM6249/ </p>
-             <p>Батзориг </p>
-             <p>Өсөхбаяр </p>
-             <p>Хүслэн </p>
+             <p>Тэнгис /22B1NUM6249/ </p>
+             <p>Батзориг /23B1NUM1898/ </p>
+             <p>Өсөхбаяр /21B1NUM2080/ </p>
+             <p>Хүслэн /25B1NUM4286/ </p>
           </div>
   </div>
     
@@ -2554,7 +2554,7 @@ Gini = 1 - \sum_{i=1}^{n} p_i^2
 </section>
 <section id="өгөгдлийн-боловсруулалт" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="өгөгдлийн-боловсруулалт"><span class="header-section-number">3.2</span> Өгөгдлийн боловсруулалт</h2>
-<div id="67b228fd" class="cell" data-execution_count="1">
+<div id="3ad9a1c0" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ast</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2591,7 +2591,7 @@ test  нийт мөр: 42021
 </div>
 </div>
 <p>“No Rating” болон үнэлгээний тоо хангалтгүй мөрүүдийг хасаж, зөвхөн тодорхой амжилттай эсвэл амжилтгүй гэсэн үнэлгээтэй тоглоомуудыг үлдээв.</p>
-<div id="265428d9" class="cell" data-execution_count="2">
+<div id="601a4b90" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_and_filter(path):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(path)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    valid <span class="op">=</span> SUCCESS_LABELS <span class="op">|</span> FAILURE_LABELS</span>
@@ -2621,7 +2621,7 @@ test  амжилтын хувь:  0.485</code></pre>
 <h2 data-number="4.1" class="anchored" data-anchor-id="feature-сонголт-боловсруулалт"><span class="header-section-number">4.1</span> Feature сонголт, боловсруулалт</h2>
 <p>Загварт ашиглах feature-үүдийг хоёр бүлэгт хуваав.</p>
 <p><strong>Multinomial NB-д зориулсан tag feature:</strong></p>
-<div id="6b960206" class="cell" data-execution_count="3">
+<div id="4bb17b32" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_list_col(series):</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># JSON list string-ийг Python list болгон parse хийнэ</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> safe_parse(val):</span>
@@ -2665,7 +2665,7 @@ test  амжилтын хувь:  0.485</code></pre>
 </div>
 </div>
 <p><strong>Gaussian NB-д зориулсан тоон feature:</strong></p>
-<div id="ae321ab1" class="cell" data-execution_count="4">
+<div id="c177efdd" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_numeric_features(df):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># тоон feature-үүдийг гарган авна</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.copy()</span>
@@ -2706,7 +2706,7 @@ max         5000.00      1.00      20.00        11.00      103.00       2026.00<
 </section>
 <section id="multinomial-naive-bayes-хэрэгжүүлэлт" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="multinomial-naive-bayes-хэрэгжүүлэлт"><span class="header-section-number">4.2</span> Multinomial Naive Bayes хэрэгжүүлэлт</h2>
-<div id="27beb8e0" class="cell" data-execution_count="5">
+<div id="3bd652a0" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.naive_bayes <span class="im">import</span> MultinomialNB, GaussianNB</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, confusion_matrix</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2760,7 +2760,7 @@ max         5000.00      1.00      20.00        11.00      103.00       2026.00<
 </section>
 <section id="gaussian-naive-bayes-хэрэгжүүлэлт" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="gaussian-naive-bayes-хэрэгжүүлэлт"><span class="header-section-number">4.3</span> Gaussian Naive Bayes хэрэгжүүлэлт</h2>
-<div id="05f5c032" class="cell" data-execution_count="6">
+<div id="c6839c3b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gnb <span class="op">=</span> GaussianNB()</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># train өгөгдлөөр feature бүрийн дундаж, стандарт хазайлтыг класс тус бүрд тооцно</span></span>
@@ -2785,7 +2785,7 @@ max         5000.00      1.00      20.00        11.00      103.00       2026.00<
 </section>
 <section id="шийдвэрийн-мод-хэрэгжүүлэлт" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="шийдвэрийн-мод-хэрэгжүүлэлт"><span class="header-section-number">4.4</span> Шийдвэрийн мод хэрэгжүүлэлт</h2>
-<div id="c340a719" class="cell" data-execution_count="7">
+<div id="e9e5f866" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> plot_tree</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2976,15 +2976,19 @@ import numpy as np
 from sklearn.naive_bayes import MultinomialNB, GaussianNB
 from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.tree import DecisionTreeClassifier
+import webbrowser
+import os
+import json
+import tempfile
 
 
-TRAIN_PATH = &quot;train.csv&quot;
-TEST_PATH  = &quot;test.csv&quot;
+TRAIN_PATH = &quot;data/train.csv&quot;
+TEST_PATH  = &quot;data/test.csv&quot;
 
 SUCCESS_LABELS = {
     &quot;Very Positive&quot;,
     &quot;Overwhelmingly Positive&quot;,
-&quot;Mostly Positive&quot;,
+    &quot;Mostly Positive&quot;,
     &quot;Positive&quot;,
 }
 FAILURE_LABELS = {
@@ -2995,7 +2999,6 @@ FAILURE_LABELS = {
     &quot;Overwhelmingly Negative&quot;,
 }
 
-# tag-уудаас хамгийн өргөн тархсан top n-г сонгоно
 TOP_TAGS_COUNT = 50
 
 
@@ -3008,7 +3011,6 @@ def load_and_filter(path):
 
 
 def parse_list_col(series):
-    # JSON list string-ийг Python list болгон parse хийнэ
     def safe_parse(val):
         try:
             return ast.literal_eval(val)
@@ -3018,7 +3020,6 @@ def parse_list_col(series):
 
 
 def get_top_tags(train_df, n):
-    # train дээрх хамгийн их давтагдсан n tag-ийг буцаана
     tag_counts = {}
     for tag_list in parse_list_col(train_df[&quot;tags&quot;]):
         for tag in tag_list:
@@ -3028,7 +3029,6 @@ def get_top_tags(train_df, n):
 
 
 def encode_tags(df, top_tags):
-    # top_tags тус бүр binary feature болгоно (multi-hot)
     tag_lists = parse_list_col(df[&quot;tags&quot;])
     tag_set_list = [set(lst) for lst in tag_lists]
     encoded = {}
@@ -3039,7 +3039,6 @@ def encode_tags(df, top_tags):
 
 
 def build_numeric_features(df):
-    # тоон feature-үүдийг гарган авна
     df = df.copy()
     df[&quot;release_date&quot;] = pd.to_datetime(df[&quot;release_date&quot;], errors=&quot;coerce&quot;)
     df[&quot;release_year&quot;] = df[&quot;release_date&quot;].dt.year.fillna(0).astype(int)
@@ -3065,7 +3064,6 @@ def print_results(model_name, y_test, y_pred):
     cm = confusion_matrix(y_test, y_pred)
     tn, fp, fn, tp = cm.ravel()
 
-    # success болон failure тус бүрийн зөв таарсан хувь
     success_total = tp + fn
     failure_total = tn + fp
     success_correct_pct = tp / success_total * 100 if success_total &gt; 0 else 0
@@ -3097,85 +3095,391 @@ def run_gaussian_nb(x_train, y_train, x_test, y_test):
     return model
 
 
-def interactive_prediction_system():
-    &quot;&quot;&quot;Full interactive system with trained models - Line by line input&quot;&quot;&quot;
-    
+# ─────────────────────────────────────────────
+#  VISUAL DASHBOARD - HTML REPORT
+# ─────────────────────────────────────────────
+
+def generate_visual_report(results_data):
+    &quot;&quot;&quot;
+    results_data dict:
+      - game_info:   dict of user inputs
+      - pred:        0 or 1
+      - prob:        [fail_prob, success_prob]
+      - mnb_pred, mnb_prob
+      - gnb_pred, gnb_prob
+      - factors:     list of (label, type) tuples
+      - train_stats: dict with success_rate etc.
+    &quot;&quot;&quot;
+    gi = results_data[&quot;game_info&quot;]
+    pred = results_data[&quot;pred&quot;]
+    prob = results_data[&quot;prob&quot;]
+    mnb_pred = results_data[&quot;mnb_pred&quot;]
+    mnb_prob = results_data[&quot;mnb_prob&quot;]
+    gnb_pred = results_data[&quot;gnb_pred&quot;]
+    gnb_prob = results_data[&quot;gnb_prob&quot;]
+    factors = results_data[&quot;factors&quot;]
+
+    success_pct = round(prob[1] * 100, 1)
+    fail_pct = round(prob[0] * 100, 1)
+    result_label = &quot;АМЖИЛТТАЙ&quot; if pred == 1 else &quot;АМЖИЛТГҮЙ&quot;
+    result_color = &quot;#1D9E75&quot; if pred == 1 else &quot;#D85A30&quot;
+    result_bg    = &quot;#E1F5EE&quot; if pred == 1 else &quot;#FAECE7&quot;
+
+    def model_badge(p, prob_arr):
+        lbl = &quot;SUCCESS&quot; if p == 1 else &quot;FAILURE&quot;
+        bg  = &quot;#E1F5EE&quot; if p == 1 else &quot;#FAECE7&quot;
+        col = &quot;#0F6E56&quot; if p == 1 else &quot;#993C1D&quot;
+        conf = round(max(prob_arr) * 100, 1)
+        return f&#39;&lt;span style=&quot;background:{bg};color:{col};padding:3px 10px;border-radius:6px;font-size:13px;font-weight:500;&quot;&gt;{lbl} {conf}%&lt;/span&gt;&#39;
+
+    dt_badge  = model_badge(pred, prob)
+    mnb_badge = model_badge(mnb_pred, mnb_prob)
+    gnb_badge = model_badge(gnb_pred, gnb_prob)
+
+    votes = [pred, mnb_pred, gnb_pred]
+    majority = 1 if sum(votes) &gt;= 2 else 0
+    ensemble_label = &quot;АМЖИЛТТАЙ&quot; if majority == 1 else &quot;АМЖИЛТГҮЙ&quot;
+    ensemble_color = &quot;#1D9E75&quot; if majority == 1 else &quot;#D85A30&quot;
+
+    factors_html = &quot;&quot;
+    for label, ftype in factors[:6]:
+        icon = &quot;✓&quot; if ftype == &quot;positive&quot; else &quot;⚠&quot;
+        fc   = &quot;#0F6E56&quot; if ftype == &quot;positive&quot; else &quot;#854F0B&quot;
+        fbg  = &quot;#E1F5EE&quot; if ftype == &quot;positive&quot; else &quot;#FAEEDA&quot;
+        factors_html += f&#39;&#39;&#39;
+        &lt;div style=&quot;display:flex;align-items:center;gap:10px;padding:8px 12px;
+                    background:{fbg};border-radius:8px;margin-bottom:6px;&quot;&gt;
+          &lt;span style=&quot;color:{fc};font-size:16px;font-weight:bold;&quot;&gt;{icon}&lt;/span&gt;
+          &lt;span style=&quot;color:{fc};font-size:14px;&quot;&gt;{label}&lt;/span&gt;
+        &lt;/div&gt;&#39;&#39;&#39;
+
+    tags_str    = &quot;, &quot;.join(gi.get(&quot;tags&quot;, [])) or &quot;—&quot;
+    genres_str  = &quot;, &quot;.join(gi.get(&quot;genres&quot;, [])) or &quot;—&quot;
+    langs_str   = &quot;, &quot;.join(gi.get(&quot;languages&quot;, [])) or &quot;—&quot;
+    price_str   = f&quot;${float(gi.get(&#39;price&#39;, 0)):.2f}&quot;
+    date_str    = gi.get(&quot;release_date&quot;, &quot;—&quot;)
+
+    html = f&quot;&quot;&quot;&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;mn&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;/&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;/&gt;
+&lt;title&gt;Game Success Report&lt;/title&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js&quot;&gt;&lt;/script&gt;
+&lt;style&gt;
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{
+    font-family: &#39;Segoe UI&#39;, system-ui, sans-serif;
+    background: #f5f4ef;
+    color: #2C2C2A;
+    min-height: 100vh;
+    padding: 32px 16px;
+  }}
+  .container {{ max-width: 860px; margin: 0 auto; }}
+  h1 {{
+    font-size: 22px; font-weight: 600; letter-spacing: -0.5px;
+    margin-bottom: 4px; color: #2C2C2A;
+  }}
+  .subtitle {{ font-size: 14px; color: #888780; margin-bottom: 28px; }}
+  .card {{
+    background: #fff;
+    border: 0.5px solid #D3D1C7;
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+  }}
+  .card-title {{
+    font-size: 13px; font-weight: 500; color: #888780;
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 16px;
+  }}
+  .result-hero {{
+    display: flex; align-items: center; gap: 20px;
+    padding: 28px; border-radius: 14px;
+    background: {result_bg}; border: 0.5px solid #D3D1C7;
+    margin-bottom: 20px;
+  }}
+  .result-icon {{
+    font-size: 52px; line-height: 1;
+  }}
+  .result-label {{
+    font-size: 28px; font-weight: 700; color: {result_color};
+    letter-spacing: -1px;
+  }}
+  .result-sub {{
+    font-size: 14px; color: #5F5E5A; margin-top: 4px;
+  }}
+  .metrics-grid {{
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    margin-bottom: 20px;
+  }}
+  .metric-card {{
+    background: #fff; border: 0.5px solid #D3D1C7;
+    border-radius: 10px; padding: 16px 18px;
+    text-align: center;
+  }}
+  .metric-label {{
+    font-size: 12px; color: #888780; margin-bottom: 6px;
+  }}
+  .metric-value {{
+    font-size: 26px; font-weight: 600; color: #2C2C2A;
+  }}
+  .info-grid {{
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }}
+  .info-row {{
+    display: flex; flex-direction: column; gap: 2px;
+    padding: 10px 14px; background: #f5f4ef; border-radius: 8px;
+  }}
+  .info-key {{ font-size: 11px; color: #888780; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }}
+  .info-val {{ font-size: 14px; color: #2C2C2A; }}
+  .model-row {{
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0; border-bottom: 0.5px solid #f0efe8;
+  }}
+  .model-row:last-child {{ border-bottom: none; }}
+  .model-name {{ font-size: 14px; color: #2C2C2A; }}
+  .ensemble-box {{
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px; border-radius: 10px;
+    background: #f5f4ef; margin-top: 16px;
+  }}
+  .ensemble-label {{ font-size: 13px; color: #5F5E5A; }}
+  .ensemble-value {{ font-size: 16px; font-weight: 600; color: {ensemble_color}; }}
+  @media (max-width: 520px) {{
+    .metrics-grid {{ grid-template-columns: 1fr 1fr; }}
+    .info-grid {{ grid-template-columns: 1fr; }}
+  }}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;container&quot;&gt;
+
+  &lt;h1&gt;🎮 Game Success Report&lt;/h1&gt;
+  &lt;p class=&quot;subtitle&quot;&gt;Machine Learning prediction dashboard — Decision Tree + Naive Bayes ensemble&lt;/p&gt;
+
+  &lt;!-- RESULT HERO --&gt;
+  &lt;div class=&quot;result-hero&quot;&gt;
+    &lt;div class=&quot;result-icon&quot;&gt;{&quot;✅&quot; if pred == 1 else &quot;❌&quot;}&lt;/div&gt;
+    &lt;div&gt;
+      &lt;div class=&quot;result-label&quot;&gt;{result_label}&lt;/div&gt;
+      &lt;div class=&quot;result-sub&quot;&gt;Decision Tree загварын таамаглал · {success_pct}% амжилтын магадлал&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- PROBABILITY METRICS --&gt;
+  &lt;div class=&quot;metrics-grid&quot;&gt;
+    &lt;div class=&quot;metric-card&quot;&gt;
+      &lt;div class=&quot;metric-label&quot;&gt;Амжилтын магадлал&lt;/div&gt;
+      &lt;div class=&quot;metric-value&quot; style=&quot;color:#1D9E75;&quot;&gt;{success_pct}%&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;metric-card&quot;&gt;
+      &lt;div class=&quot;metric-label&quot;&gt;Амжилтгүйн магадлал&lt;/div&gt;
+      &lt;div class=&quot;metric-value&quot; style=&quot;color:#D85A30;&quot;&gt;{fail_pct}%&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;metric-card&quot;&gt;
+      &lt;div class=&quot;metric-label&quot;&gt;Ensemble санал&lt;/div&gt;
+      &lt;div class=&quot;metric-value&quot; style=&quot;color:{ensemble_color};font-size:18px;&quot;&gt;{ensemble_label}&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- PROBABILITY CHART --&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;card-title&quot;&gt;Магадлалын харьцуулалт&lt;/div&gt;
+    &lt;div style=&quot;display:flex;gap:12px;margin-bottom:12px;font-size:12px;color:#888780;&quot;&gt;
+      &lt;span&gt;&lt;span style=&quot;display:inline-block;width:10px;height:10px;border-radius:2px;background:#1D9E75;margin-right:4px;&quot;&gt;&lt;/span&gt;Амжилттай&lt;/span&gt;
+      &lt;span&gt;&lt;span style=&quot;display:inline-block;width:10px;height:10px;border-radius:2px;background:#D85A30;margin-right:4px;&quot;&gt;&lt;/span&gt;Амжилтгүй&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div style=&quot;position:relative;width:100%;height:100px;&quot;&gt;
+      &lt;canvas id=&quot;probChart&quot; role=&quot;img&quot;
+        aria-label=&quot;Probability bar chart showing success {success_pct}% and failure {fail_pct}%&quot;&gt;
+        Амжилт: {success_pct}%, Амжилтгүй: {fail_pct}%
+      &lt;/canvas&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- MODEL COMPARISON --&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;card-title&quot;&gt;Загваруудын харьцуулалт&lt;/div&gt;
+    &lt;div class=&quot;model-row&quot;&gt;
+      &lt;span class=&quot;model-name&quot;&gt;Decision Tree&lt;/span&gt;
+      {dt_badge}
+    &lt;/div&gt;
+    &lt;div class=&quot;model-row&quot;&gt;
+      &lt;span class=&quot;model-name&quot;&gt;Multinomial Naive Bayes&lt;/span&gt;
+      {mnb_badge}
+    &lt;/div&gt;
+    &lt;div class=&quot;model-row&quot;&gt;
+      &lt;span class=&quot;model-name&quot;&gt;Gaussian Naive Bayes&lt;/span&gt;
+      {gnb_badge}
+    &lt;/div&gt;
+    &lt;div class=&quot;ensemble-box&quot;&gt;
+      &lt;span class=&quot;ensemble-label&quot;&gt;🗳 Majority vote (ensemble):&lt;/span&gt;
+      &lt;span class=&quot;ensemble-value&quot;&gt;{ensemble_label}&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;!-- KEY FACTORS --&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;card-title&quot;&gt;Гол хүчин зүйлүүд&lt;/div&gt;
+    {&quot;&quot;.join([f&#39;&lt;div style=&quot;display:flex;align-items:center;gap:10px;padding:8px 12px;background:{&quot;#E1F5EE&quot; if t==&quot;positive&quot; else &quot;#FAEEDA&quot;};border-radius:8px;margin-bottom:6px;&quot;&gt;&lt;span style=&quot;color:{&quot;#0F6E56&quot; if t==&quot;positive&quot; else &quot;#854F0B&quot;};font-size:16px;font-weight:bold;&quot;&gt;{&quot;✓&quot; if t==&quot;positive&quot; else &quot;⚠&quot;}&lt;/span&gt;&lt;span style=&quot;color:{&quot;#0F6E56&quot; if t==&quot;positive&quot; else &quot;#854F0B&quot;};font-size:14px;&quot;&gt;{l}&lt;/span&gt;&lt;/div&gt;&#39; for l,t in factors[:6]] or [&quot;&lt;p style=&#39;color:#888780;font-size:14px;&#39;&gt;Тодорхой хүчин зүйл илрэгдсэнгүй&lt;/p&gt;&quot;])}
+  &lt;/div&gt;
+
+  &lt;!-- GAME INFO --&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;card-title&quot;&gt;Тоглоомын мэдээлэл&lt;/div&gt;
+    &lt;div class=&quot;info-grid&quot;&gt;
+      &lt;div class=&quot;info-row&quot;&gt;
+        &lt;span class=&quot;info-key&quot;&gt;Tags&lt;/span&gt;
+        &lt;span class=&quot;info-val&quot;&gt;{tags_str[:80]}{&quot;...&quot; if len(tags_str)&gt;80 else &quot;&quot;}&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-row&quot;&gt;
+        &lt;span class=&quot;info-key&quot;&gt;Үнэ&lt;/span&gt;
+        &lt;span class=&quot;info-val&quot;&gt;{price_str}&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-row&quot;&gt;
+        &lt;span class=&quot;info-key&quot;&gt;Жанр&lt;/span&gt;
+        &lt;span class=&quot;info-val&quot;&gt;{genres_str}&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-row&quot;&gt;
+        &lt;span class=&quot;info-key&quot;&gt;Хэл&lt;/span&gt;
+        &lt;span class=&quot;info-val&quot;&gt;{langs_str[:60]}{&quot;...&quot; if len(langs_str)&gt;60 else &quot;&quot;}&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-row&quot; style=&quot;grid-column:1/-1;&quot;&gt;
+        &lt;span class=&quot;info-key&quot;&gt;Гарсан огноо&lt;/span&gt;
+        &lt;span class=&quot;info-val&quot;&gt;{date_str}&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+new Chart(document.getElementById(&#39;probChart&#39;), {{
+  type: &#39;bar&#39;,
+  data: {{
+    labels: [&#39;Амжилттай&#39;, &#39;Амжилтгүй&#39;],
+    datasets: [{{
+      data: [{success_pct}, {fail_pct}],
+      backgroundColor: [&#39;#1D9E75&#39;, &#39;#D85A30&#39;],
+      borderRadius: 6,
+      barThickness: 32
+    }}]
+  }},
+  options: {{
+    indexAxis: &#39;y&#39;,
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {{ legend: {{ display: false }} }},
+    scales: {{
+      x: {{
+        max: 100,
+        ticks: {{
+          callback: v =&gt; v + &#39;%&#39;,
+          font: {{ size: 12 }}
+        }},
+        grid: {{ color: &#39;#f0efe8&#39; }}
+      }},
+      y: {{
+        ticks: {{ font: {{ size: 13 }} }},
+        grid: {{ display: false }}
+      }}
+    }}
+  }}
+}});
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;&quot;&quot;&quot;
+    return html
+
+
+def open_visual_report(results_data):
+    html = generate_visual_report(results_data)
+    tmp = tempfile.NamedTemporaryFile(mode=&#39;w&#39;, suffix=&#39;.html&#39;,
+                                     delete=False, encoding=&#39;utf-8&#39;)
+    tmp.write(html)
+    tmp.close()
+    path = os.path.abspath(tmp.name)
+    print(f&quot;\n📊 Visual report: file://{path}&quot;)
+    webbrowser.open(f&quot;file://{path}&quot;)
+    return path
+
+
+# ─────────────────────────────────────────────
+#  INTERACTIVE PREDICTION SYSTEM
+# ─────────────────────────────────────────────
+
+def interactive_prediction_system(visual_mode=False):
+    &quot;&quot;&quot;Interactive system — terminal input with optional HTML visual report.&quot;&quot;&quot;
+
     train_df = load_and_filter(TRAIN_PATH)
-    test_df = load_and_filter(TEST_PATH)
-    
+    test_df  = load_and_filter(TEST_PATH)
+
     top_tags = get_top_tags(train_df, TOP_TAGS_COUNT)
-    
-    # Prepare training data
+
     x_train_tags = encode_tags(train_df, top_tags)
-    x_train_num = build_numeric_features(train_df)
+    x_train_num  = build_numeric_features(train_df)
     x_train = pd.concat([x_train_tags.reset_index(drop=True),
                          x_train_num.reset_index(drop=True)], axis=1)
     y_train = train_df[&quot;success&quot;]
-    
-    # Train model
-    model = DecisionTreeClassifier(criterion=&quot;gini&quot;, max_depth=6, 
+
+    model = DecisionTreeClassifier(criterion=&quot;gini&quot;, max_depth=6,
                                    min_samples_split=20, random_state=42)
     model.fit(x_train, y_train)
-    
-    # Also train Naive Bayes models for comparison
+
     mnb_model = MultinomialNB()
     mnb_model.fit(x_train_tags, y_train)
-    
+
     gnb_model = GaussianNB()
     gnb_model.fit(x_train_num, y_train)
-    
+
     print(&quot;\n&quot; + &quot;=&quot;*60)
     print(&quot;🎮 GAME SUCCESS PREDICTOR 🎮&quot;)
     print(&quot;=&quot;*60)
+    if visual_mode:
+        print(&quot;📊 Visual mode ON — browser дээр report нээгдэнэ&quot;)
     print(&quot;Enter game details below (press Enter after each line)&quot;)
     print(&quot;Type &#39;quit&#39; at any prompt to exit&quot;)
     print(&quot;-&quot;*60)
-    
+
     while True:
         print(&quot;\n&quot; + &quot;🔍 NEW GAME&quot;.center(60))
         print(&quot;-&quot;*60)
-        
+
         try:
-            # Tags input
             print(&quot;\n📷 TAGS (comma-separated):&quot;)
             print(&quot;   Example: Indie, RPG, Story Rich, Adventure&quot;)
             tags_input = input(&quot;   ➜ Tags: &quot;).strip()
             if tags_input.lower() == &#39;quit&#39;:
                 break
             tags = [t.strip() for t in tags_input.split(&#39;,&#39;) if t.strip()]
-            
-            # Price input
+
             print(&quot;\n💰 PRICE (in USD):&quot;)
             print(&quot;   Example: 19.99, 0.00, 49.99&quot;)
             price_input = input(&quot;   ➜ Price: $&quot;).strip()
             if price_input.lower() == &#39;quit&#39;:
                 break
             price = float(price_input)
-            
-            # Genres input
+
             print(&quot;\n🎭 GENRES (comma-separated):&quot;)
             print(&quot;   Example: Indie, RPG, Strategy&quot;)
             genres_input = input(&quot;   ➜ Genres: &quot;).strip()
             if genres_input.lower() == &#39;quit&#39;:
                 break
             genres = [g.strip() for g in genres_input.split(&#39;,&#39;) if g.strip()]
-            
-            # Languages input
+
             print(&quot;\n🌐 LANGUAGES (comma-separated):&quot;)
             print(&quot;   Example: English, French, German, Spanish&quot;)
             langs_input = input(&quot;   ➜ Languages: &quot;).strip()
             if langs_input.lower() == &#39;quit&#39;:
                 break
             languages = [l.strip() for l in langs_input.split(&#39;,&#39;) if l.strip()]
-            
-            # Release date input
+
             print(&quot;\n📅 RELEASE DATE (YYYY-MM-DD):&quot;)
             print(&quot;   Example: 2023-06-15&quot;)
             release_date = input(&quot;   ➜ Release date: &quot;).strip()
             if release_date.lower() == &#39;quit&#39;:
                 break
-            
-            # Show summary before prediction
+
             print(&quot;\n&quot; + &quot;=&quot;*60)
             print(&quot;📋 GAME SUMMARY&quot;.center(60))
             print(&quot;=&quot;*60)
@@ -3184,38 +3488,33 @@ def interactive_prediction_system():
             print(f&quot;   Genres:    {&#39;, &#39;.join(genres) if genres else &#39;None&#39;}&quot;)
             print(f&quot;   Languages: {&#39;, &#39;.join(languages) if languages else &#39;None&#39;}&quot;)
             print(f&quot;   Released:  {release_date}&quot;)
-            
-            # Create DataFrame
+
             game_df = pd.DataFrame({
-                &#39;tags&#39;: [str(tags)],
-                &#39;genres&#39;: [str(genres)],
-                &#39;languages&#39;: [str(languages)],
-                &#39;price&#39;: [price],
-                &#39;release_date&#39;: [release_date],
+                &#39;tags&#39;:           [str(tags)],
+                &#39;genres&#39;:         [str(genres)],
+                &#39;languages&#39;:      [str(languages)],
+                &#39;price&#39;:          [price],
+                &#39;release_date&#39;:   [release_date],
                 &#39;review_summary&#39;: [&#39;Unknown&#39;]
             })
-            
-            # Process features
+
             x_tags_pred = encode_tags(game_df, top_tags)
-            x_num_pred = build_numeric_features(game_df)
+            x_num_pred  = build_numeric_features(game_df)
             x_pred = pd.concat([x_tags_pred.reset_index(drop=True),
-                               x_num_pred.reset_index(drop=True)], axis=1)
-            
-            # Predict
+                                 x_num_pred.reset_index(drop=True)], axis=1)
+
             pred = model.predict(x_pred)[0]
             prob = model.predict_proba(x_pred)[0]
-            
-            # Display results with visual feedback
+
             print(&quot;\n&quot; + &quot;=&quot;*60)
             print(&quot;🎯 PREDICTION RESULT&quot;.center(60))
             print(&quot;=&quot;*60)
-            
-            # Create progress bar for confidence
+
             def confidence_bar(percentage, width=20):
                 filled = int(width * percentage / 100)
                 bar = &#39;█&#39; * filled + &#39;░&#39; * (width - filled)
                 return bar
-            
+
             if pred == 1:
                 print(&quot;\n✅ PREDICTION: SUCCESSFUL GAME ✅&quot;)
                 print(f&quot;\n   Confidence: {prob[1]*100:.1f}%&quot;)
@@ -3224,81 +3523,95 @@ def interactive_prediction_system():
                 print(&quot;\n❌ PREDICTION: FAILURE GAME ❌&quot;)
                 print(f&quot;\n   Confidence: {prob[0]*100:.1f}%&quot;)
                 print(f&quot;   {confidence_bar(prob[0]*100)}&quot;)
-            
+
             print(f&quot;\n   📊 Success probability: {prob[1]*100:.1f}%&quot;)
             print(f&quot;   📊 Failure probability: {prob[0]*100:.1f}%&quot;)
-            
-            # Feature importance feedback
+
             print(&quot;\n&quot; + &quot;📊 KEY FACTORS ANALYZED&quot;.center(60))
             print(&quot;-&quot;*60)
-            
-            # Check various features
+
             factors = []
-            
-            # Check tags safely
-            indie_col = &#39;tag_indie&#39;
-            action_col = &#39;tag_action&#39;
+            indie_col    = &#39;tag_indie&#39;
+            action_col   = &#39;tag_action&#39;
             strategy_col = &#39;tag_strategy&#39;
-            
+
             if indie_col in x_tags_pred.columns and x_tags_pred[indie_col].values[0] == 1:
-                factors.append((&quot;✓ Has &#39;Indie&#39; tag&quot;, &quot;positive&quot;))
+                factors.append((&quot;Has &#39;Indie&#39; tag&quot;, &quot;positive&quot;))
             if action_col in x_tags_pred.columns and x_tags_pred[action_col].values[0] == 1:
-                factors.append((&quot;✓ Has &#39;Action&#39; tag&quot;, &quot;positive&quot;))
+                factors.append((&quot;Has &#39;Action&#39; tag&quot;, &quot;positive&quot;))
             if strategy_col in x_tags_pred.columns and x_tags_pred[strategy_col].values[0] == 1:
-                factors.append((&quot;✓ Has &#39;Strategy&#39; tag&quot;, &quot;positive&quot;))
-            
+                factors.append((&quot;Has &#39;Strategy&#39; tag&quot;, &quot;positive&quot;))
+
             price_val = x_num_pred[&#39;price_capped&#39;].values[0]
             if price_val == 0:
-                factors.append((&quot;✓ Free game&quot;, &quot;positive&quot;))
+                factors.append((&quot;Free game&quot;, &quot;positive&quot;))
             elif price_val &gt; 30:
-                factors.append((&quot;⚠️ High price (&gt;$30)&quot;, &quot;negative&quot;))
+                factors.append((&quot;High price (&gt;$30)&quot;, &quot;negative&quot;))
             elif price_val &lt; 10:
-                factors.append((&quot;✓ Low price (&lt;$10)&quot;, &quot;positive&quot;))
-                
+                factors.append((&quot;Low price (&lt;$10)&quot;, &quot;positive&quot;))
+
             tag_count_val = x_num_pred[&#39;tag_count&#39;].values[0]
             if tag_count_val &gt; 8:
-                factors.append((&quot;✓ Many descriptive tags&quot;, &quot;positive&quot;))
+                factors.append((&quot;Many descriptive tags&quot;, &quot;positive&quot;))
             elif tag_count_val &lt; 3:
-                factors.append((&quot;⚠️ Few tags (less discovery)&quot;, &quot;negative&quot;))
-                
+                factors.append((&quot;Few tags (less discovery)&quot;, &quot;negative&quot;))
+
             genre_count_val = x_num_pred[&#39;genre_count&#39;].values[0]
             if genre_count_val &gt; 2:
-                factors.append((&quot;✓ Multiple genres&quot;, &quot;positive&quot;))
-                
+                factors.append((&quot;Multiple genres&quot;, &quot;positive&quot;))
+
             lang_count_val = x_num_pred[&#39;lang_count&#39;].values[0]
             if lang_count_val &gt; 5:
-                factors.append((&quot;✓ Broad language support&quot;, &quot;positive&quot;))
+                factors.append((&quot;Broad language support&quot;, &quot;positive&quot;))
             elif lang_count_val == 1:
-                factors.append((&quot;⚠️ Limited language support&quot;, &quot;negative&quot;))
-            
-            if factors:
-                for factor, _ in factors[:5]:  
-                    print(f&quot;   {factor}&quot;)
-            else:
+                factors.append((&quot;Limited language support&quot;, &quot;negative&quot;))
+
+            for label, ftype in factors[:5]:
+                icon = &quot;✓&quot; if ftype == &quot;positive&quot; else &quot;⚠️&quot;
+                print(f&quot;   {icon} {label}&quot;)
+
+            if not factors:
                 print(&quot;   No strong factors detected&quot;)
-            
-            # Alternative prediction using other models for comparison
+
             print(&quot;\n&quot; + &quot;🔄 MODEL COMPARISON&quot;.center(60))
             print(&quot;-&quot;*60)
-            
-            # Predict with Naive Bayes models for comparison
+
             mnb_pred = mnb_model.predict(x_tags_pred)[0]
             mnb_prob = mnb_model.predict_proba(x_tags_pred)[0]
-            
+
             gnb_pred = gnb_model.predict(x_num_pred)[0]
             gnb_prob = gnb_model.predict_proba(x_num_pred)[0]
-            
+
             print(f&quot;   Decision Tree:   {&#39;✅ SUCCESS&#39; if pred == 1 else &#39;❌ FAILURE&#39;} ({max(prob)*100:.1f}%)&quot;)
             print(f&quot;   Multinomial NB:  {&#39;✅ SUCCESS&#39; if mnb_pred == 1 else &#39;❌ FAILURE&#39;} ({max(mnb_prob)*100:.1f}%)&quot;)
             print(f&quot;   Gaussian NB:     {&#39;✅ SUCCESS&#39; if gnb_pred == 1 else &#39;❌ FAILURE&#39;} ({max(gnb_prob)*100:.1f}%)&quot;)
-            
-            # Final recommendation based on majority vote
+
             votes = [pred, mnb_pred, gnb_pred]
             majority = 1 if sum(votes) &gt;= 2 else 0
-            
+
             if majority != pred:
                 print(f&quot;\n   💡 Ensemble suggests: {&#39;SUCCESS&#39; if majority == 1 else &#39;FAILURE&#39;}&quot;)
-            
+
+            # ── VISUAL REPORT ──────────────────────────────────
+            if visual_mode:
+                results_data = {
+                    &quot;game_info&quot;: {
+                        &quot;tags&quot;:         tags,
+                        &quot;price&quot;:        price,
+                        &quot;genres&quot;:       genres,
+                        &quot;languages&quot;:    languages,
+                        &quot;release_date&quot;: release_date,
+                    },
+                    &quot;pred&quot;:     pred,
+                    &quot;prob&quot;:     prob,
+                    &quot;mnb_pred&quot;: mnb_pred,
+                    &quot;mnb_prob&quot;: mnb_prob,
+                    &quot;gnb_pred&quot;: gnb_pred,
+                    &quot;gnb_prob&quot;: gnb_prob,
+                    &quot;factors&quot;:  factors,
+                }
+                open_visual_report(results_data)
+
         except ValueError:
             print(&quot;\n❌ Error: Invalid number format. Please check your input.&quot;)
             print(&quot;   Example: Price should be a number like 19.99&quot;)
@@ -3310,8 +3623,7 @@ def interactive_prediction_system():
             print(f&quot;\n❌ Unexpected error: {e}&quot;)
             print(&quot;   Please try again with valid input&quot;)
             continue
-        
-        # Ask for another prediction
+
         print(&quot;\n&quot; + &quot;-&quot;*60)
         again = input(&quot;\n🎮 Predict another game? (yes/no): &quot;).strip().lower()
         if again not in [&#39;yes&#39;, &#39;y&#39;]:
@@ -3319,8 +3631,11 @@ def interactive_prediction_system():
             break
 
 
+# ─────────────────────────────────────────────
+#  MAIN (test set evaluation)
+# ─────────────────────────────────────────────
+
 def main():
-    &quot;&quot;&quot;Original main function for testing on test data&quot;&quot;&quot;
     train_df = load_and_filter(TRAIN_PATH)
     test_df  = load_and_filter(TEST_PATH)
 
@@ -3329,7 +3644,6 @@ def main():
     print(f&quot;test  success rate: {test_df[&#39;success&#39;].mean():.3f}&quot;)
     print()
 
-    # Naive Bayes - MultinomialNB
     top_tags   = get_top_tags(train_df, TOP_TAGS_COUNT)
     x_train_nb = encode_tags(train_df, top_tags)
     x_test_nb  = encode_tags(test_df, top_tags)
@@ -3339,57 +3653,50 @@ def main():
     mnb_model = run_multinomial_nb(x_train_nb, y_train, x_test_nb, y_test)
     print()
 
-    # Naive Bayes - GaussianNB
     x_train_num = build_numeric_features(train_df)
     x_test_num  = build_numeric_features(test_df)
 
     gnb_model = run_gaussian_nb(x_train_num, y_train, x_test_num, y_test)
     print()
 
-    # Decision tree
     x_train_tree = pd.concat(
         [x_train_nb.reset_index(drop=True),
-         x_train_num.reset_index(drop=True)],
-        axis=1
-    )
-
+         x_train_num.reset_index(drop=True)], axis=1)
     x_test_tree = pd.concat(
         [x_test_nb.reset_index(drop=True),
-         x_test_num.reset_index(drop=True)],
-        axis=1
-    )
+         x_test_num.reset_index(drop=True)], axis=1)
 
     tree_model = DecisionTreeClassifier(
-        criterion=&quot;gini&quot;,
-        max_depth=6,
-        min_samples_split=20,
-        random_state=42
-    )
-
+        criterion=&quot;gini&quot;, max_depth=6,
+        min_samples_split=20, random_state=42)
     tree_model.fit(x_train_tree, y_train)
-
     y_pred_tree = tree_model.predict(x_test_tree)
-
     print_results(&quot;Decision Tree&quot;, y_test, y_pred_tree)
 
 
+# ─────────────────────────────────────────────
+#  ENTRY POINT
+# ─────────────────────────────────────────────
+
 if __name__ == &quot;__main__&quot;:
-    # Ask user which mode to run
     print(&quot;=&quot;*60)
     print(&quot;🎮 GAME SUCCESS PREDICTION SYSTEM 🎮&quot;)
     print(&quot;=&quot;*60)
     print(&quot;\nSelect mode:&quot;)
     print(&quot;1. Test on existing test data (original main function)&quot;)
-    print(&quot;2. Interactive prediction (enter your own game details)&quot;)
-    print(&quot;3. Run both&quot;)
-    
-    choice = input(&quot;\nEnter your choice (1/2/3): &quot;).strip()
-    
+    print(&quot;2. Interactive prediction (terminal output)&quot;)
+    print(&quot;3. Interactive prediction + Visual HTML report (browser)&quot;)
+    print(&quot;4. Run both test + interactive (terminal output)&quot;)
+
+    choice = input(&quot;\nEnter your choice (1/2/3/4): &quot;).strip()
+
     if choice == &#39;1&#39;:
         main()
     elif choice == &#39;2&#39;:
-        interactive_prediction_system()
+        interactive_prediction_system(visual_mode=False)
     elif choice == &#39;3&#39;:
+        interactive_prediction_system(visual_mode=True)
+    elif choice == &#39;4&#39;:
         print(&quot;\n&quot; + &quot;=&quot;*60)
         print(&quot;RUNNING TEST ON TEST DATA&quot;)
         print(&quot;=&quot;*60)
@@ -3397,10 +3704,10 @@ if __name__ == &quot;__main__&quot;:
         print(&quot;\n&quot; + &quot;=&quot;*60)
         print(&quot;STARTING INTERACTIVE MODE&quot;)
         print(&quot;=&quot;*60)
-        interactive_prediction_system()
+        interactive_prediction_system(visual_mode=False)
     else:
         print(&quot;Invalid choice. Running interactive mode by default.&quot;)
-        interactive_prediction_system()</code></pre>
+        interactive_prediction_system(visual_mode=False)</code></pre>
 </section>
 </section>
 
