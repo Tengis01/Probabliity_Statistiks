@@ -8,7 +8,8 @@ import webbrowser
 import os
 import json
 import tempfile
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 TRAIN_PATH = "data/train.csv"
 TEST_PATH  = "data/test.csv"
