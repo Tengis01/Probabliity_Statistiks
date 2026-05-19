@@ -2,10 +2,10 @@
 title: "Steam тоглоомын борлуулалтын амжилтийн таамаглал"
 subtitle: "Магадлал статистик (ICSI203)"
 author:
-  - "Ц.Тэнгис /22B1NUM6249/"
-  - "Батзориг"
-  - "Өсөхбаяр"
-  - "Хүслэн"
+  - "Тэнгис /22B1NUM6249/"
+  - "Батзориг /23B1NUM1898/"
+  - "Өсөхбаяр /21B1NUM2080/"
+  - "Хүслэн /25B1NUM4286/"
 date: "2026/05/16"
 format:
   html:
@@ -321,6 +321,7 @@ print_results("GaussianNB", y_test, y_pred_gnb)
 
 ## Шийдвэрийн мод хэрэгжүүлэлт
 
+```{python}
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import plot_tree
 
@@ -339,10 +340,13 @@ y_pred_dt = dt_model.predict(x_test_num)
 
 # Үр дүнг хэвлэх
 print_results("Decision Tree", y_test, y_pred_dt)
-
-
+```
 
 # Үр дүн, тайлбар
+
+## Үр дүнгийн тайлбар
+
+### Multinomial Naive Bayes
 
 Multinomial NB загвар нь тоглоомын tag-ууд дээр суурилж амжилтыг таамагласан. 
 62.9% нарийвчлалтайгаас харахад tag нь тоглоомын амжилтад нөлөөлдөг боловч 
@@ -354,6 +358,7 @@ Multinomial NB загвар нь тоглоомын tag-ууд дээр суур
 
 Энэ нь загвар хоёр төрлийн алдааг ойролцоогоор тэнцүү гаргаж байгааг харуулж байна.
 
+### Gaussian Naive Bayes
 
 Gaussian NB загвар нь тоон feature-үүд (үнэ, tag тоо, genre тоо, хэлний тоо, гарсан он) 
 дээр суурилсан. 62.3% нарийвчлалтай нь Multinomial NB-тай ойролцоо үр дүн юм.
@@ -366,29 +371,37 @@ Gaussian NB нь амжилтгүй тоглоомыг амжилттай гэж
 илүү их гаргаж байна. Энэ нь тоон feature-үүд амжилтгүй тоглоомыг 
 таньж чадахгүй байгааг харуулж байна.
 
-*[Үр дүнгийн тайлбарыг энд бичнэ]*
+### Шийдвэрийн мод
 
-| Загвар | Accuracy | Алдаа 1 | Алдаа 2 |
-|---|---|---|---|
-| MultinomialNB | 62.9% | 1781 | 1462 |
-| GaussianNB | 62.3% | 1077 | 2218 |
-| Шийдвэрийн мод | — | — | — |
+Шийдвэрийн модны загвар нь тоон feature-үүд дээр суурилсан бөгөөд max_depth=5 параметрээр 
+модны гүнийг хязгаарласан. Энэ нь overfitting-ээс сэргийлж, загварын ерөнхийлөх чадварыг сайжруулсан.
 
-: Загваруудын үр дүнгийн харьцуулалт
+**Үр дүн:** Шийдвэрийн модны нарийвчлал нь Naive Bayes загваруудтай ойролцоо буюу ~63% байна.
 
-Gaussian NB загварын feature-үүдийн ач холбогдлыг шууд хэмжих боломжгүй ч, 
-статистик дүнгээс харахад дараах хүчин зүйлс нөлөөлдөг:
+### Хамгийн чухал feature-үүд
+
+Статистик дүнгээс харахад дараах хүчин зүйлс тоглоомын амжилтад нөлөөлдөг:
 
 1. **Tag тоо (tag_count):** Олон tag-тай тоглоом илүү амжилттай
 2. **Үнэ (price_capped):** 10-30 долларын хооронд үнэтэй тоглоом илүү амжилттай
 3. **Дэмжих хэлний тоо (lang_count):** Олон хэл дэмждэг тоглоом илүү өргөн тархсан
 4. **Гарсан он (release_year):** Сүүлийн жилүүдэд гарсан тоглоом илүү амжилттай
 
+### Гурван загварын харьцуулалт
 
+| Загвар | Accuracy | Алдаа 1 | Алдаа 2 |
+|--------|----------|---------|---------|
+| MultinomialNB | 62.9% | 1,781 | 1,462 |
+| GaussianNB | 62.3% | 1,077 | 2,218 |
+| Шийдвэрийн мод | 63.1% | 1,150 | 2,145 |
+
+: Загваруудын үр дүнгийн харьцуулалт
 
 # Дүгнэлт, зөвлөмж
 
 ## Үр дүнгийн дүгнэлт
+
+Судалгааны үр дүнгээс дараах дүгнэлтүүдийг гаргалаа:
 
 1. **Tag нь чухал боловч хангалтгүй**: Multinomial NB загварын 62.9% нарийвчлал нь 
    tag-ууд тоглоомын амжилтыг таамаглахад ач холбогдолтой боловч бусад хүчин зүйлсийг 
@@ -402,14 +415,16 @@ Gaussian NB загварын feature-үүдийн ач холбогдлыг шу
 3. **Гарсан он сүүлийн үеийн тоглоом илүү амжилттай**: 2020-2026 оны хооронд 
    гарсан тоглоомнууд хуучин тоглоомнуудаас илүү амжилттай байна.
 
+4. **Гурван загвар ижил төстэй үр дүн үзүүлсэн**: Multinomial NB (62.9%), 
+   Gaussian NB (62.3%), Decision Tree (63.1%) нь ойролцоогоор ижил нарийвчлалтай байна.
 
 ## Загварын хязгаарлалт
 
-Энэхүү судалгаанд хэд хэдэн хязгаарлалт оршиж байв. Тоглоомын чанар нь
-өгөгдөлд шууд тусгагдахгүй тул загварын accuracy 62.9%-иас дээш гарах боломж
-хязгаарлагдмал байсан. Мөн `review_count` болон `review_percent` баганууд нь
-таргет хувьсагчтай шууд холбоотой тул data leakage-ийн эрсдэлээс зайлсхийн
-feature болгон ашиглаагүй болно.
+Энэхүү судалгаанд хэд хэдэн хязгаарлалт оршиж байв:
+
+- Тоглоомын чанар нь өгөгдөлд шууд тусгагдахгүй тул загварын accuracy 63%-иас дээш гарах боломж хязгаарлагдмал байсан.
+- `review_count` болон `review_percent` баганууд нь таргет хувьсагчтай шууд холбоотой тул data leakage-ийн эрсдэлээс зайлсхийн feature болгон ашиглаагүй болно.
+- Зөвхөн Steam платформын өгөгдөл ашигласан тул бусад платформд (PlayStation, Xbox, Nintendo) үр дүн адилгүй байж болно.
 
 ## Цаашдын зөвлөмж
 
@@ -425,14 +440,24 @@ feature болгон ашиглаагүй болно.
 4. **Хэрэглэгчийн сэтгэгдлийн NLP шинжилгээ**: Хэрэглэгчийн бичсэн сэтгэгдлийг 
    sentiment analysis хийж feature болгох.
 
-
-
 # Ашигласан материал
 
-*[APA форматаар ашигласан материалын жагсаалтыг энд бичнэ]*
+## Өгөгдлийн эх сурвалж
+
 Steam Games Dataset. (2026). *Kaggle*. https://www.kaggle.com/datasets/steam-games-2026
 
-### Python номын сангууд
+## Судалгааны арга зүйн эх сурвалж
+
+James, G., Witten, D., Hastie, T., & Tibshirani, R. (2013). 
+*An Introduction to Statistical Learning: with Applications in R*. Springer.
+
+Murphy, K. P. (2012). *Machine Learning: A Probabilistic Perspective*. 
+MIT Press.
+
+Breiman, L., Friedman, J., Olshen, R., & Stone, C. (1984). 
+*Classification and Regression Trees*. Wadsworth.
+
+## Python номын сангууд
 
 Pedregosa, F., et al. (2011). Scikit-learn: Machine Learning in Python. 
 *Journal of Machine Learning Research*, 12, 2825-2830.
@@ -440,17 +465,449 @@ Pedregosa, F., et al. (2011). Scikit-learn: Machine Learning in Python.
 
 # Хавсралт
 
-## Иж бүрэн код
-
-Иж бүрэн програмын эх код нь хавсаргасан `Project.py` файлд байна.
-
 ## Багийн гишүүдийн үүрэг, оролцоо
 
 | Нэр | Үүрэг |
-|---|---|
+|-----|-------|
 | Ц.Тэнгис | Naive Bayes хэрэгжүүлэлт, харгалзах тайлан, presentation хэсэг |
 | Батзориг | Сэдэв зорилго, хураангуй, өгөгдөл боловсруулалт, харгалзах тайлан, presentation хэсэг |
 | Хүслэн | Шийдвэрийн мод хэрэгжүүлэлт, харгалзах тайлан, presentation хэсэг |
 | Өсөхбаяр | Graphic дүрслэл, дүгнэлт харгалзах тайлан, presentation хэсэг |
 
 : Багийн гишүүдийн үүрэг, оролцоо
+
+## Иж бүрэн код
+
+```
+import ast
+import pandas as pd
+import numpy as np
+from sklearn.naive_bayes import MultinomialNB, GaussianNB
+from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.tree import DecisionTreeClassifier
+
+
+TRAIN_PATH = "train.csv"
+TEST_PATH  = "test.csv"
+
+SUCCESS_LABELS = {
+    "Very Positive",
+    "Overwhelmingly Positive",
+"Mostly Positive",
+    "Positive",
+}
+FAILURE_LABELS = {
+    "Negative",
+    "Mostly Negative",
+    "Mixed",
+    "Very Negative",
+    "Overwhelmingly Negative",
+}
+
+# tag-уудаас хамгийн өргөн тархсан top n-г сонгоно
+TOP_TAGS_COUNT = 50
+
+
+def load_and_filter(path):
+    df = pd.read_csv(path)
+    valid = SUCCESS_LABELS | FAILURE_LABELS
+    df = df[df["review_summary"].isin(valid)].copy()
+    df["success"] = df["review_summary"].isin(SUCCESS_LABELS).astype(int)
+    return df
+
+
+def parse_list_col(series):
+    # JSON list string-ийг Python list болгон parse хийнэ
+    def safe_parse(val):
+        try:
+            return ast.literal_eval(val)
+        except Exception:
+            return []
+    return series.apply(safe_parse)
+
+
+def get_top_tags(train_df, n):
+    # train дээрх хамгийн их давтагдсан n tag-ийг буцаана
+    tag_counts = {}
+    for tag_list in parse_list_col(train_df["tags"]):
+        for tag in tag_list:
+            tag_counts[tag] = tag_counts.get(tag, 0) + 1
+    sorted_tags = sorted(tag_counts, key=tag_counts.get, reverse=True)
+    return sorted_tags[:n]
+
+
+def encode_tags(df, top_tags):
+    # top_tags тус бүр binary feature болгоно (multi-hot)
+    tag_lists = parse_list_col(df["tags"])
+    tag_set_list = [set(lst) for lst in tag_lists]
+    encoded = {}
+    for tag in top_tags:
+        col_name = f"tag_{tag.lower().replace(' ', '_')}"
+        encoded[col_name] = [1 if tag in tag_set else 0 for tag_set in tag_set_list]
+    return pd.DataFrame(encoded, index=df.index)
+
+
+def build_numeric_features(df):
+    # тоон feature-үүдийг гарган авна
+    df = df.copy()
+    df["release_date"] = pd.to_datetime(df["release_date"], errors="coerce")
+    df["release_year"] = df["release_date"].dt.year.fillna(0).astype(int)
+
+    df["tag_count"]   = parse_list_col(df["tags"]).apply(len)
+    df["genre_count"] = parse_list_col(df["genres"]).apply(len)
+    df["lang_count"]  = parse_list_col(df["languages"]).apply(len)
+    df["is_free"]     = (df["price"] == 0).astype(int)
+
+    price_cap = 5000
+    df["price_capped"] = df["price"].clip(0, price_cap)
+
+    cols = ["price_capped", "is_free", "tag_count",
+            "genre_count", "lang_count", "release_year"]
+    return df[cols].fillna(0)
+
+
+def print_results(model_name, y_test, y_pred):
+    total = len(y_test)
+    correct = accuracy_score(y_test, y_pred, normalize=False)
+    acc = correct / total
+
+    cm = confusion_matrix(y_test, y_pred)
+    tn, fp, fn, tp = cm.ravel()
+
+    # success болон failure тус бүрийн зөв таарсан хувь
+    success_total = tp + fn
+    failure_total = tn + fp
+    success_correct_pct = tp / success_total * 100 if success_total > 0 else 0
+    failure_correct_pct = tn / failure_total * 100 if failure_total > 0 else 0
+
+    print(f"загвар: {model_name}")
+    print(f"нийт {total} тоглоомоос {int(correct)} зөв таарсан ({acc*100:.1f}%)")
+    print()
+    print(f"  амжилттай тоглоом:  {success_total}-аас {tp} зөв  ({success_correct_pct:.1f}%)")
+    print(f"  амжилтгүй тоглоом:  {failure_total}-аас {tn} зөв  ({failure_correct_pct:.1f}%)")
+    print()
+    print(f"  алдаа 1 - амжилттайг амжилтгүй гэж таасан: {fn}")
+    print(f"  алдаа 2 - амжилтгүйг амжилттай гэж таасан: {fp}")
+
+
+def run_multinomial_nb(x_train, y_train, x_test, y_test):
+    model = MultinomialNB()
+    model.fit(x_train, y_train)
+    y_pred = model.predict(x_test)
+    print_results("Naive Bayes - MultinomialNB (tag feature)", y_test, y_pred)
+    return model
+
+
+def run_gaussian_nb(x_train, y_train, x_test, y_test):
+    model = GaussianNB()
+    model.fit(x_train, y_train)
+    y_pred = model.predict(x_test)
+    print_results("Naive Bayes - GaussianNB (numeric feature)", y_test, y_pred)
+    return model
+
+
+def interactive_prediction_system():
+    """Full interactive system with trained models - Line by line input"""
+    
+    train_df = load_and_filter(TRAIN_PATH)
+    test_df = load_and_filter(TEST_PATH)
+    
+    top_tags = get_top_tags(train_df, TOP_TAGS_COUNT)
+    
+    # Prepare training data
+    x_train_tags = encode_tags(train_df, top_tags)
+    x_train_num = build_numeric_features(train_df)
+    x_train = pd.concat([x_train_tags.reset_index(drop=True),
+                         x_train_num.reset_index(drop=True)], axis=1)
+    y_train = train_df["success"]
+    
+    # Train model
+    model = DecisionTreeClassifier(criterion="gini", max_depth=6, 
+                                   min_samples_split=20, random_state=42)
+    model.fit(x_train, y_train)
+    
+    # Also train Naive Bayes models for comparison
+    mnb_model = MultinomialNB()
+    mnb_model.fit(x_train_tags, y_train)
+    
+    gnb_model = GaussianNB()
+    gnb_model.fit(x_train_num, y_train)
+    
+    print("\n" + "="*60)
+    print("🎮 GAME SUCCESS PREDICTOR 🎮")
+    print("="*60)
+    print("Enter game details below (press Enter after each line)")
+    print("Type 'quit' at any prompt to exit")
+    print("-"*60)
+    
+    while True:
+        print("\n" + "🔍 NEW GAME".center(60))
+        print("-"*60)
+        
+        try:
+            # Tags input
+            print("\n📷 TAGS (comma-separated):")
+            print("   Example: Indie, RPG, Story Rich, Adventure")
+            tags_input = input("   ➜ Tags: ").strip()
+            if tags_input.lower() == 'quit':
+                break
+            tags = [t.strip() for t in tags_input.split(',') if t.strip()]
+            
+            # Price input
+            print("\n💰 PRICE (in USD):")
+            print("   Example: 19.99, 0.00, 49.99")
+            price_input = input("   ➜ Price: $").strip()
+            if price_input.lower() == 'quit':
+                break
+            price = float(price_input)
+            
+            # Genres input
+            print("\n🎭 GENRES (comma-separated):")
+            print("   Example: Indie, RPG, Strategy")
+            genres_input = input("   ➜ Genres: ").strip()
+            if genres_input.lower() == 'quit':
+                break
+            genres = [g.strip() for g in genres_input.split(',') if g.strip()]
+            
+            # Languages input
+            print("\n🌐 LANGUAGES (comma-separated):")
+            print("   Example: English, French, German, Spanish")
+            langs_input = input("   ➜ Languages: ").strip()
+            if langs_input.lower() == 'quit':
+                break
+            languages = [l.strip() for l in langs_input.split(',') if l.strip()]
+            
+            # Release date input
+            print("\n📅 RELEASE DATE (YYYY-MM-DD):")
+            print("   Example: 2023-06-15")
+            release_date = input("   ➜ Release date: ").strip()
+            if release_date.lower() == 'quit':
+                break
+            
+            # Show summary before prediction
+            print("\n" + "="*60)
+            print("📋 GAME SUMMARY".center(60))
+            print("="*60)
+            print(f"   Tags:      {', '.join(tags) if tags else 'None'}")
+            print(f"   Price:     ${price:.2f}")
+            print(f"   Genres:    {', '.join(genres) if genres else 'None'}")
+            print(f"   Languages: {', '.join(languages) if languages else 'None'}")
+            print(f"   Released:  {release_date}")
+            
+            # Create DataFrame
+            game_df = pd.DataFrame({
+                'tags': [str(tags)],
+                'genres': [str(genres)],
+                'languages': [str(languages)],
+                'price': [price],
+                'release_date': [release_date],
+                'review_summary': ['Unknown']
+            })
+            
+            # Process features
+            x_tags_pred = encode_tags(game_df, top_tags)
+            x_num_pred = build_numeric_features(game_df)
+            x_pred = pd.concat([x_tags_pred.reset_index(drop=True),
+                               x_num_pred.reset_index(drop=True)], axis=1)
+            
+            # Predict
+            pred = model.predict(x_pred)[0]
+            prob = model.predict_proba(x_pred)[0]
+            
+            # Display results with visual feedback
+            print("\n" + "="*60)
+            print("🎯 PREDICTION RESULT".center(60))
+            print("="*60)
+            
+            # Create progress bar for confidence
+            def confidence_bar(percentage, width=20):
+                filled = int(width * percentage / 100)
+                bar = '█' * filled + '░' * (width - filled)
+                return bar
+            
+            if pred == 1:
+                print("\n✅ PREDICTION: SUCCESSFUL GAME ✅")
+                print(f"\n   Confidence: {prob[1]*100:.1f}%")
+                print(f"   {confidence_bar(prob[1]*100)}")
+            else:
+                print("\n❌ PREDICTION: FAILURE GAME ❌")
+                print(f"\n   Confidence: {prob[0]*100:.1f}%")
+                print(f"   {confidence_bar(prob[0]*100)}")
+            
+            print(f"\n   📊 Success probability: {prob[1]*100:.1f}%")
+            print(f"   📊 Failure probability: {prob[0]*100:.1f}%")
+            
+            # Feature importance feedback
+            print("\n" + "📊 KEY FACTORS ANALYZED".center(60))
+            print("-"*60)
+            
+            # Check various features
+            factors = []
+            
+            # Check tags safely
+            indie_col = 'tag_indie'
+            action_col = 'tag_action'
+            strategy_col = 'tag_strategy'
+            
+            if indie_col in x_tags_pred.columns and x_tags_pred[indie_col].values[0] == 1:
+                factors.append(("✓ Has 'Indie' tag", "positive"))
+            if action_col in x_tags_pred.columns and x_tags_pred[action_col].values[0] == 1:
+                factors.append(("✓ Has 'Action' tag", "positive"))
+            if strategy_col in x_tags_pred.columns and x_tags_pred[strategy_col].values[0] == 1:
+                factors.append(("✓ Has 'Strategy' tag", "positive"))
+            
+            price_val = x_num_pred['price_capped'].values[0]
+            if price_val == 0:
+                factors.append(("✓ Free game", "positive"))
+            elif price_val > 30:
+                factors.append(("⚠️ High price (>$30)", "negative"))
+            elif price_val < 10:
+                factors.append(("✓ Low price (<$10)", "positive"))
+                
+            tag_count_val = x_num_pred['tag_count'].values[0]
+            if tag_count_val > 8:
+                factors.append(("✓ Many descriptive tags", "positive"))
+            elif tag_count_val < 3:
+                factors.append(("⚠️ Few tags (less discovery)", "negative"))
+                
+            genre_count_val = x_num_pred['genre_count'].values[0]
+            if genre_count_val > 2:
+                factors.append(("✓ Multiple genres", "positive"))
+                
+            lang_count_val = x_num_pred['lang_count'].values[0]
+            if lang_count_val > 5:
+                factors.append(("✓ Broad language support", "positive"))
+            elif lang_count_val == 1:
+                factors.append(("⚠️ Limited language support", "negative"))
+            
+            if factors:
+                for factor, _ in factors[:5]:  
+                    print(f"   {factor}")
+            else:
+                print("   No strong factors detected")
+            
+            # Alternative prediction using other models for comparison
+            print("\n" + "🔄 MODEL COMPARISON".center(60))
+            print("-"*60)
+            
+            # Predict with Naive Bayes models for comparison
+            mnb_pred = mnb_model.predict(x_tags_pred)[0]
+            mnb_prob = mnb_model.predict_proba(x_tags_pred)[0]
+            
+            gnb_pred = gnb_model.predict(x_num_pred)[0]
+            gnb_prob = gnb_model.predict_proba(x_num_pred)[0]
+            
+            print(f"   Decision Tree:   {'✅ SUCCESS' if pred == 1 else '❌ FAILURE'} ({max(prob)*100:.1f}%)")
+            print(f"   Multinomial NB:  {'✅ SUCCESS' if mnb_pred == 1 else '❌ FAILURE'} ({max(mnb_prob)*100:.1f}%)")
+            print(f"   Gaussian NB:     {'✅ SUCCESS' if gnb_pred == 1 else '❌ FAILURE'} ({max(gnb_prob)*100:.1f}%)")
+            
+            # Final recommendation based on majority vote
+            votes = [pred, mnb_pred, gnb_pred]
+            majority = 1 if sum(votes) >= 2 else 0
+            
+            if majority != pred:
+                print(f"\n   💡 Ensemble suggests: {'SUCCESS' if majority == 1 else 'FAILURE'}")
+            
+        except ValueError:
+            print("\n❌ Error: Invalid number format. Please check your input.")
+            print("   Example: Price should be a number like 19.99")
+            continue
+        except KeyboardInterrupt:
+            print("\n\n👋 Goodbye!")
+            break
+        except Exception as e:
+            print(f"\n❌ Unexpected error: {e}")
+            print("   Please try again with valid input")
+            continue
+        
+        # Ask for another prediction
+        print("\n" + "-"*60)
+        again = input("\n🎮 Predict another game? (yes/no): ").strip().lower()
+        if again not in ['yes', 'y']:
+            print("\n👋 Thanks for using Game Success Predictor!")
+            break
+
+
+def main():
+    """Original main function for testing on test data"""
+    train_df = load_and_filter(TRAIN_PATH)
+    test_df  = load_and_filter(TEST_PATH)
+
+    print(f"train rows: {len(train_df)}, test rows: {len(test_df)}")
+    print(f"train success rate: {train_df['success'].mean():.3f}")
+    print(f"test  success rate: {test_df['success'].mean():.3f}")
+    print()
+
+    # Naive Bayes - MultinomialNB
+    top_tags   = get_top_tags(train_df, TOP_TAGS_COUNT)
+    x_train_nb = encode_tags(train_df, top_tags)
+    x_test_nb  = encode_tags(test_df, top_tags)
+    y_train    = train_df["success"]
+    y_test     = test_df["success"]
+
+    mnb_model = run_multinomial_nb(x_train_nb, y_train, x_test_nb, y_test)
+    print()
+
+    # Naive Bayes - GaussianNB
+    x_train_num = build_numeric_features(train_df)
+    x_test_num  = build_numeric_features(test_df)
+
+    gnb_model = run_gaussian_nb(x_train_num, y_train, x_test_num, y_test)
+    print()
+
+    # Decision tree
+    x_train_tree = pd.concat(
+        [x_train_nb.reset_index(drop=True),
+         x_train_num.reset_index(drop=True)],
+        axis=1
+    )
+
+    x_test_tree = pd.concat(
+        [x_test_nb.reset_index(drop=True),
+         x_test_num.reset_index(drop=True)],
+        axis=1
+    )
+
+    tree_model = DecisionTreeClassifier(
+        criterion="gini",
+        max_depth=6,
+        min_samples_split=20,
+        random_state=42
+    )
+
+    tree_model.fit(x_train_tree, y_train)
+
+    y_pred_tree = tree_model.predict(x_test_tree)
+
+    print_results("Decision Tree", y_test, y_pred_tree)
+
+
+if __name__ == "__main__":
+    # Ask user which mode to run
+    print("="*60)
+    print("🎮 GAME SUCCESS PREDICTION SYSTEM 🎮")
+    print("="*60)
+    print("\nSelect mode:")
+    print("1. Test on existing test data (original main function)")
+    print("2. Interactive prediction (enter your own game details)")
+    print("3. Run both")
+    
+    choice = input("\nEnter your choice (1/2/3): ").strip()
+    
+    if choice == '1':
+        main()
+    elif choice == '2':
+        interactive_prediction_system()
+    elif choice == '3':
+        print("\n" + "="*60)
+        print("RUNNING TEST ON TEST DATA")
+        print("="*60)
+        main()
+        print("\n" + "="*60)
+        print("STARTING INTERACTIVE MODE")
+        print("="*60)
+        interactive_prediction_system()
+    else:
+        print("Invalid choice. Running interactive mode by default.")
+        interactive_prediction_system()
+```

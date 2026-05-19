@@ -6,13 +6,13 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.tree import DecisionTreeClassifier
 
 
-TRAIN_PATH = "train.csv"
-TEST_PATH  = "test.csv"
+TRAIN_PATH = "data/train.csv"
+TEST_PATH  = "data/test.csv"
 
 SUCCESS_LABELS = {
     "Very Positive",
     "Overwhelmingly Positive",
-    "Mostly Positive",
+"Mostly Positive",
     "Positive",
 }
 FAILURE_LABELS = {
@@ -100,7 +100,7 @@ def print_results(model_name, y_test, y_pred):
     failure_correct_pct = tn / failure_total * 100 if failure_total > 0 else 0
 
     print(f"загвар: {model_name}")
-    print(f"нийт {total} тоглоомоос {correct} зөв таарсан ({acc*100:.1f}%)")
+    print(f"нийт {total} тоглоомоос {int(correct)} зөв таарсан ({acc*100:.1f}%)")
     print()
     print(f"  амжилттай тоглоом:  {success_total}-аас {tp} зөв  ({success_correct_pct:.1f}%)")
     print(f"  амжилтгүй тоглоом:  {failure_total}-аас {tn} зөв  ({failure_correct_pct:.1f}%)")
@@ -110,39 +110,17 @@ def print_results(model_name, y_test, y_pred):
 
 
 def run_multinomial_nb(x_train, y_train, x_test, y_test):
-    # tag-уудыг multi-hot encoding хийсэн feature дээр MultinomialNB ажиллуулна.
-    # MultinomialNB нь тоологдох утга (0 эсвэл 1, count) дээр ажилладаг —
-    # spam detection дээр үгийн давтамж ашигладагтай ижил зарчим.
-    # энд "Indie tag байна уу, үгүй юу" гэсэн 50 асуултын хариултаар
-    # тоглоом амжилттай эсэхийг таарварлана.
     model = MultinomialNB()
-
-    # train өгөгдлөөр P(tag | success) болон P(tag | failure) магадлалуудыг тооцоолно
     model.fit(x_train, y_train)
-
-    # test өгөгдлийн tag-уудаар Bayes теоремоор класс таарварлана:
-    # P(success | tags) ∝ P(tags | success) * P(success)
     y_pred = model.predict(x_test)
-
     print_results("Naive Bayes - MultinomialNB (tag feature)", y_test, y_pred)
     return model
 
 
 def run_gaussian_nb(x_train, y_train, x_test, y_test):
-    # price, tag_count, lang_count, release_year зэрэг тоон feature дээр GaussianNB ажиллуулна.
-    # GaussianNB нь feature бүрийн утга normal (Gaussian) distribution дагана гэж үзэж
-    # train үед класс тус бүрийн дундаж болон стандарт хазайлтыг хадгална.
-    # жишээ нь: success тоглоомын price-ийн дундаж болон failure-ийнхтэй харьцуулж
-    # шинэ тоглоомын price аль бүлэгт илүү магадлалтай орох вэ гэдгийг тооцдог.
     model = GaussianNB()
-
-    # train өгөгдлөөр feature бүрийн дундаж, стандарт хазайлтыг класс тус бүрд тооцно
     model.fit(x_train, y_train)
-
-    # test өгөгдлийн утга бүрийг gaussian_pdf(x, mean, std) томьёогоор магадлал болгон
-    # хөрвүүлж P(success | features) > P(failure | features) эсэхийг шалгана
     y_pred = model.predict(x_test)
-
     print_results("Naive Bayes - GaussianNB (numeric feature)", y_test, y_pred)
     return model
 
@@ -166,6 +144,13 @@ def interactive_prediction_system():
     model = DecisionTreeClassifier(criterion="gini", max_depth=6, 
                                    min_samples_split=20, random_state=42)
     model.fit(x_train, y_train)
+    
+    # Also train Naive Bayes models for comparison
+    mnb_model = MultinomialNB()
+    mnb_model.fit(x_train_tags, y_train)
+    
+    gnb_model = GaussianNB()
+    gnb_model.fit(x_train_num, y_train)
     
     print("\n" + "="*60)
     print("🎮 GAME SUCCESS PREDICTOR 🎮")
@@ -222,10 +207,10 @@ def interactive_prediction_system():
             print("\n" + "="*60)
             print("📋 GAME SUMMARY".center(60))
             print("="*60)
-            print(f"   Tags:      {', '.join(tags)}")
+            print(f"   Tags:      {', '.join(tags) if tags else 'None'}")
             print(f"   Price:     ${price:.2f}")
-            print(f"   Genres:    {', '.join(genres)}")
-            print(f"   Languages: {', '.join(languages)}")
+            print(f"   Genres:    {', '.join(genres) if genres else 'None'}")
+            print(f"   Languages: {', '.join(languages) if languages else 'None'}")
             print(f"   Released:  {release_date}")
             
             # Create DataFrame
@@ -278,31 +263,40 @@ def interactive_prediction_system():
             # Check various features
             factors = []
             
-            if 'tag_indie' in x_tags_pred.columns and x_tags_pred['tag_indie'].values[0] == 1:
+            # Check tags safely
+            indie_col = 'tag_indie'
+            action_col = 'tag_action'
+            strategy_col = 'tag_strategy'
+            
+            if indie_col in x_tags_pred.columns and x_tags_pred[indie_col].values[0] == 1:
                 factors.append(("✓ Has 'Indie' tag", "positive"))
-            if 'tag_action' in x_tags_pred.columns and x_tags_pred['tag_action'].values[0] == 1:
+            if action_col in x_tags_pred.columns and x_tags_pred[action_col].values[0] == 1:
                 factors.append(("✓ Has 'Action' tag", "positive"))
-            if 'tag_strategy' in x_tags_pred.columns and x_tags_pred['tag_strategy'].values[0] == 1:
+            if strategy_col in x_tags_pred.columns and x_tags_pred[strategy_col].values[0] == 1:
                 factors.append(("✓ Has 'Strategy' tag", "positive"))
             
-            if x_num_pred['price_capped'].values[0] == 0:
+            price_val = x_num_pred['price_capped'].values[0]
+            if price_val == 0:
                 factors.append(("✓ Free game", "positive"))
-            elif x_num_pred['price_capped'].values[0] > 30:
+            elif price_val > 30:
                 factors.append(("⚠️ High price (>$30)", "negative"))
-            elif x_num_pred['price_capped'].values[0] < 10:
+            elif price_val < 10:
                 factors.append(("✓ Low price (<$10)", "positive"))
                 
-            if x_num_pred['tag_count'].values[0] > 8:
+            tag_count_val = x_num_pred['tag_count'].values[0]
+            if tag_count_val > 8:
                 factors.append(("✓ Many descriptive tags", "positive"))
-            elif x_num_pred['tag_count'].values[0] < 3:
+            elif tag_count_val < 3:
                 factors.append(("⚠️ Few tags (less discovery)", "negative"))
                 
-            if x_num_pred['genre_count'].values[0] > 2:
+            genre_count_val = x_num_pred['genre_count'].values[0]
+            if genre_count_val > 2:
                 factors.append(("✓ Multiple genres", "positive"))
                 
-            if x_num_pred['lang_count'].values[0] > 5:
+            lang_count_val = x_num_pred['lang_count'].values[0]
+            if lang_count_val > 5:
                 factors.append(("✓ Broad language support", "positive"))
-            elif x_num_pred['lang_count'].values[0] == 1:
+            elif lang_count_val == 1:
                 factors.append(("⚠️ Limited language support", "negative"))
             
             if factors:
@@ -315,14 +309,10 @@ def interactive_prediction_system():
             print("\n" + "🔄 MODEL COMPARISON".center(60))
             print("-"*60)
             
-            # Also predict with Naive Bayes models for comparison
-            mnb_model = MultinomialNB()
-            mnb_model.fit(x_train_tags, y_train)
+            # Predict with Naive Bayes models for comparison
             mnb_pred = mnb_model.predict(x_tags_pred)[0]
             mnb_prob = mnb_model.predict_proba(x_tags_pred)[0]
             
-            gnb_model = GaussianNB()
-            gnb_model.fit(x_train_num, y_train)
             gnb_pred = gnb_model.predict(x_num_pred)[0]
             gnb_prob = gnb_model.predict_proba(x_num_pred)[0]
             
